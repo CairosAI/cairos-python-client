@@ -34,5 +34,6 @@ print("list avatars")
 avatars = get_avatars.sync_detailed(client=cl).parsed
 print(avatars)
 print("get avatar")
+assert avatars
 print(cl.get_httpx_client().request(
-    **get_avatar_file._get_kwargs(uuid=avatars[0].id)))
+    **get_avatar_file._get_kwargs(uuid=avatars[0]["id"])).content.hex()[0:40])
