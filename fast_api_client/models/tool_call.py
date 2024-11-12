@@ -4,7 +4,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.tool_call_type import ToolCallType
-from //fastapi_types import UNSET, Unset
+from ..fastapi_types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.tool_call_args import ToolCallArgs

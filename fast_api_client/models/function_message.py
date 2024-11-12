@@ -4,7 +4,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.function_message_type import FunctionMessageType
-from //fastapi_types import UNSET, Unset
+from ..fastapi_types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.function_message_additional_kwargs import FunctionMessageAdditionalKwargs

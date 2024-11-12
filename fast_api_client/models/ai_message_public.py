@@ -7,7 +7,7 @@ from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.ai_message_public_role import AIMessagePublicRole
-from //fastapi_types import UNSET, Unset
+from ..fastapi_types import UNSET, Unset
 
 T = TypeVar("T", bound="AIMessagePublic")
 
