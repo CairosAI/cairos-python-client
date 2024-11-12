@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.get_avatars_avatar_get_response_200_item import GetAvatarsAvatarGetResponse200Item
-from ...types import Response
+from ...fastapi_types import Response
 
 
 def _get_kwargs() -> Dict[str, Any]:

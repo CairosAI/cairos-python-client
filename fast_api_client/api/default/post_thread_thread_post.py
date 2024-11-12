@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.chat_thread_public import ChatThreadPublic
-from ...types import Response
+from ...fastapi_types import Response
 
 
 def _get_kwargs() -> Dict[str, Any]:

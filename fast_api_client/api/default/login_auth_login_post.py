@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.body_login_auth_login_post import BodyLoginAuthLoginPost
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response, Unset
+from ...fastapi_types import UNSET, Response, Unset
 
 
 def _get_kwargs(

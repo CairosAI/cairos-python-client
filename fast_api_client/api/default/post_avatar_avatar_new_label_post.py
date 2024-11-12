@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...fastapi_types import Response
 
 
 def _get_kwargs(

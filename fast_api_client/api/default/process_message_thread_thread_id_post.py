@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.chat_input import ChatInput
 from ...models.chat_output import ChatOutput
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...fastapi_types import Response
 
 
 def _get_kwargs(
