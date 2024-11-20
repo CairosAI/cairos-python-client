@@ -5,34 +5,18 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.body_login_auth_login_post import BodyLoginAuthLoginPost
 from ...models.http_validation_error import HTTPValidationError
-from ...fastapi_types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
-    *,
-    body: BodyLoginAuthLoginPost,
-    id: Union[Unset, str] = UNSET,
+    uuid: str,
 ) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
-
-    cookies = {}
-    if id is not UNSET:
-        cookies["id"] = id
-
     _kwargs: Dict[str, Any] = {
-        "method": "post",
-        "url": "/auth/login",
-        "cookies": cookies,
+        "method": "delete",
+        "url": f"/avatar/{uuid}",
     }
 
-    _body = body.to_dict()
-
-    _kwargs["data"] = _body
-    headers["Content-Type"] = "application/x-www-form-urlencoded"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -64,16 +48,14 @@ def _build_response(
 
 
 def sync_detailed(
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyLoginAuthLoginPost,
-    id: Union[Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Login
+    """Delete Avatar Route
 
     Args:
-        id (Union[Unset, str]):
-        body (BodyLoginAuthLoginPost):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -84,8 +66,7 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        body=body,
-        id=id,
+        uuid=uuid,
     )
 
     response = client.get_httpx_client().request(
@@ -96,16 +77,14 @@ def sync_detailed(
 
 
 def sync(
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyLoginAuthLoginPost,
-    id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Login
+    """Delete Avatar Route
 
     Args:
-        id (Union[Unset, str]):
-        body (BodyLoginAuthLoginPost):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -116,23 +95,20 @@ def sync(
     """
 
     return sync_detailed(
+        uuid=uuid,
         client=client,
-        body=body,
-        id=id,
     ).parsed
 
 
 async def asyncio_detailed(
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyLoginAuthLoginPost,
-    id: Union[Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Login
+    """Delete Avatar Route
 
     Args:
-        id (Union[Unset, str]):
-        body (BodyLoginAuthLoginPost):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -143,8 +119,7 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        body=body,
-        id=id,
+        uuid=uuid,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -153,16 +128,14 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyLoginAuthLoginPost,
-    id: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Login
+    """Delete Avatar Route
 
     Args:
-        id (Union[Unset, str]):
-        body (BodyLoginAuthLoginPost):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -174,8 +147,7 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
+            uuid=uuid,
             client=client,
-            body=body,
-            id=id,
         )
     ).parsed

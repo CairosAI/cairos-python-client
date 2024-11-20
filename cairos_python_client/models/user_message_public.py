@@ -6,30 +6,34 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.ai_message_public_role import AIMessagePublicRole
-from ..fastapi_types import UNSET, Unset
+from ..models.user_message_public_role import UserMessagePublicRole
+from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="AIMessagePublic")
+T = TypeVar("T", bound="UserMessagePublic")
 
 
 @_attrs_define
-class AIMessagePublic:
+class UserMessagePublic:
     """
     Attributes:
         id (UUID):
+        session_id (str):
         content (str):
         created_at (datetime.datetime):
-        role (Union[Unset, AIMessagePublicRole]):  Default: AIMessagePublicRole.AI.
+        role (Union[Unset, UserMessagePublicRole]):  Default: UserMessagePublicRole.HUMAN.
     """
 
     id: UUID
+    session_id: str
     content: str
     created_at: datetime.datetime
-    role: Union[Unset, AIMessagePublicRole] = AIMessagePublicRole.AI
+    role: Union[Unset, UserMessagePublicRole] = UserMessagePublicRole.HUMAN
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id = str(self.id)
+
+        session_id = self.session_id
 
         content = self.content
 
@@ -44,6 +48,7 @@ class AIMessagePublic:
         field_dict.update(
             {
                 "id": id,
+                "session_id": session_id,
                 "content": content,
                 "created_at": created_at,
             }
@@ -58,26 +63,29 @@ class AIMessagePublic:
         d = src_dict.copy()
         id = UUID(d.pop("id"))
 
+        session_id = d.pop("session_id")
+
         content = d.pop("content")
 
         created_at = isoparse(d.pop("created_at"))
 
         _role = d.pop("role", UNSET)
-        role: Union[Unset, AIMessagePublicRole]
+        role: Union[Unset, UserMessagePublicRole]
         if isinstance(_role, Unset):
             role = UNSET
         else:
-            role = AIMessagePublicRole(_role)
+            role = UserMessagePublicRole(_role)
 
-        ai_message_public = cls(
+        user_message_public = cls(
             id=id,
+            session_id=session_id,
             content=content,
             created_at=created_at,
             role=role,
         )
 
-        ai_message_public.additional_properties = d
-        return ai_message_public
+        user_message_public.additional_properties = d
+        return user_message_public
 
     @property
     def additional_keys(self) -> List[str]:

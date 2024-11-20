@@ -1,4 +1,4 @@
-"""A client library for accessing FastAPI"""
+"""A client library for accessing Cairos API"""
 
 from .client import AuthenticatedClient, Client
 

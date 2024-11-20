@@ -5,17 +5,16 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.chat_thread_public import ChatThreadPublic
 from ...models.http_validation_error import HTTPValidationError
-from ...fastapi_types import Response
+from ...types import Response
 
 
 def _get_kwargs(
-    thread_id: str,
+    uuid: str,
 ) -> Dict[str, Any]:
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": f"/thread/{thread_id}",
+        "url": f"/avatar/{uuid}",
     }
 
     return _kwargs
@@ -23,10 +22,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == 200:
-        response_200 = ChatThreadPublic.from_dict(response.json())
-
+        response_200 = response.json()
         return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -40,7 +38,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -50,25 +48,25 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Avatar With File
 
     Args:
-        thread_id (str):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatThreadPublic, HTTPValidationError]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
+        uuid=uuid,
     )
 
     response = client.get_httpx_client().request(
@@ -79,49 +77,49 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Avatar With File
 
     Args:
-        thread_id (str):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatThreadPublic, HTTPValidationError]
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
-        thread_id=thread_id,
+        uuid=uuid,
         client=client,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Avatar With File
 
     Args:
-        thread_id (str):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatThreadPublic, HTTPValidationError]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
+        uuid=uuid,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -130,26 +128,26 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
+    uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Avatar With File
 
     Args:
-        thread_id (str):
+        uuid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatThreadPublic, HTTPValidationError]
+        Union[Any, HTTPValidationError]
     """
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
+            uuid=uuid,
             client=client,
         )
     ).parsed

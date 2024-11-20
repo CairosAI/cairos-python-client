@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Type, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..fastapi_types import File
+from ..types import File
 
 T = TypeVar("T", bound="BodyPostAvatarAvatarNewLabelPost")
 

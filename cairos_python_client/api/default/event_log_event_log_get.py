@@ -5,7 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...fastapi_types import Response
+from ...types import Response
 
 
 def _get_kwargs() -> Dict[str, Any]:

@@ -1,18 +1,21 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.get_avatars_avatar_get_response_200_item import GetAvatarsAvatarGetResponse200Item
-from ...fastapi_types import Response
+from ...models.http_validation_error import HTTPValidationError
+from ...types import Response
 
 
-def _get_kwargs() -> Dict[str, Any]:
+def _get_kwargs(
+    thread_id: str,
+    trigger_msg_id: str,
+) -> Dict[str, Any]:
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/avatar",
+        "url": f"/anim/{thread_id}/{trigger_msg_id}/",
     }
 
     return _kwargs
@@ -20,16 +23,14 @@ def _get_kwargs() -> Dict[str, Any]:
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[List["GetAvatarsAvatarGetResponse200Item"]]:
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == 200:
-        response_200 = []
-        _response_200 = response.json()
-        for response_200_item_data in _response_200:
-            response_200_item = GetAvatarsAvatarGetResponse200Item.from_dict(response_200_item_data)
-
-            response_200.append(response_200_item)
-
+        response_200 = response.json()
         return response_200
+    if response.status_code == 422:
+        response_422 = HTTPValidationError.from_dict(response.json())
+
+        return response_422
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -38,7 +39,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[List["GetAvatarsAvatarGetResponse200Item"]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -48,20 +49,29 @@ def _build_response(
 
 
 def sync_detailed(
+    thread_id: str,
+    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[List["GetAvatarsAvatarGetResponse200Item"]]:
-    """Get Avatars
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Anim
+
+    Args:
+        thread_id (str):
+        trigger_msg_id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['GetAvatarsAvatarGetResponse200Item']]
+        Response[Union[Any, HTTPValidationError]]
     """
 
-    kwargs = _get_kwargs()
+    kwargs = _get_kwargs(
+        thread_id=thread_id,
+        trigger_msg_id=trigger_msg_id,
+    )
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -71,39 +81,56 @@ def sync_detailed(
 
 
 def sync(
+    thread_id: str,
+    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[List["GetAvatarsAvatarGetResponse200Item"]]:
-    """Get Avatars
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Anim
+
+    Args:
+        thread_id (str):
+        trigger_msg_id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['GetAvatarsAvatarGetResponse200Item']
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
+        thread_id=thread_id,
+        trigger_msg_id=trigger_msg_id,
         client=client,
     ).parsed
 
 
 async def asyncio_detailed(
+    thread_id: str,
+    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[List["GetAvatarsAvatarGetResponse200Item"]]:
-    """Get Avatars
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Anim
+
+    Args:
+        thread_id (str):
+        trigger_msg_id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['GetAvatarsAvatarGetResponse200Item']]
+        Response[Union[Any, HTTPValidationError]]
     """
 
-    kwargs = _get_kwargs()
+    kwargs = _get_kwargs(
+        thread_id=thread_id,
+        trigger_msg_id=trigger_msg_id,
+    )
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -111,21 +138,29 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    thread_id: str,
+    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[List["GetAvatarsAvatarGetResponse200Item"]]:
-    """Get Avatars
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Anim
+
+    Args:
+        thread_id (str):
+        trigger_msg_id (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['GetAvatarsAvatarGetResponse200Item']
+        Union[Any, HTTPValidationError]
     """
 
     return (
         await asyncio_detailed(
+            thread_id=thread_id,
+            trigger_msg_id=trigger_msg_id,
             client=client,
         )
     ).parsed

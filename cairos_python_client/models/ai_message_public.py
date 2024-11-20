@@ -6,34 +6,30 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.user_message_public_role import UserMessagePublicRole
-from ..fastapi_types import UNSET, Unset
+from ..models.ai_message_public_role import AIMessagePublicRole
+from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="UserMessagePublic")
+T = TypeVar("T", bound="AIMessagePublic")
 
 
 @_attrs_define
-class UserMessagePublic:
+class AIMessagePublic:
     """
     Attributes:
         id (UUID):
-        session_id (str):
         content (str):
         created_at (datetime.datetime):
-        role (Union[Unset, UserMessagePublicRole]):  Default: UserMessagePublicRole.HUMAN.
+        role (Union[Unset, AIMessagePublicRole]):  Default: AIMessagePublicRole.AI.
     """
 
     id: UUID
-    session_id: str
     content: str
     created_at: datetime.datetime
-    role: Union[Unset, UserMessagePublicRole] = UserMessagePublicRole.HUMAN
+    role: Union[Unset, AIMessagePublicRole] = AIMessagePublicRole.AI
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id = str(self.id)
-
-        session_id = self.session_id
 
         content = self.content
 
@@ -48,7 +44,6 @@ class UserMessagePublic:
         field_dict.update(
             {
                 "id": id,
-                "session_id": session_id,
                 "content": content,
                 "created_at": created_at,
             }
@@ -63,29 +58,26 @@ class UserMessagePublic:
         d = src_dict.copy()
         id = UUID(d.pop("id"))
 
-        session_id = d.pop("session_id")
-
         content = d.pop("content")
 
         created_at = isoparse(d.pop("created_at"))
 
         _role = d.pop("role", UNSET)
-        role: Union[Unset, UserMessagePublicRole]
+        role: Union[Unset, AIMessagePublicRole]
         if isinstance(_role, Unset):
             role = UNSET
         else:
-            role = UserMessagePublicRole(_role)
+            role = AIMessagePublicRole(_role)
 
-        user_message_public = cls(
+        ai_message_public = cls(
             id=id,
-            session_id=session_id,
             content=content,
             created_at=created_at,
             role=role,
         )
 
-        user_message_public.additional_properties = d
-        return user_message_public
+        ai_message_public.additional_properties = d
+        return ai_message_public
 
     @property
     def additional_keys(self) -> List[str]:
