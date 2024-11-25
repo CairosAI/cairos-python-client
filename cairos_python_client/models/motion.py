@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,24 +10,24 @@ T = TypeVar("T", bound="Motion")
 class Motion:
     """
     Attributes:
-        sg_id (int):
-        action (str):
-        filepath (str):
-        tags (str):
+        id (int):
+        description (str):
+        sg_file_animation (str):
+        tags (List[Any]):
     """
 
-    sg_id: int
-    action: str
-    filepath: str
-    tags: str
+    id: int
+    description: str
+    sg_file_animation: str
+    tags: List[Any]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        sg_id = self.sg_id
+        id = self.id
 
-        action = self.action
+        description = self.description
 
-        filepath = self.filepath
+        sg_file_animation = self.sg_file_animation
 
         tags = self.tags
 
@@ -35,9 +35,9 @@ class Motion:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "sg_id": sg_id,
-                "action": action,
-                "filepath": filepath,
+                "id": id,
+                "description": description,
+                "sg_file_animation": sg_file_animation,
                 "tags": tags,
             }
         )
@@ -47,18 +47,18 @@ class Motion:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        sg_id = d.pop("sg_id")
+        id = d.pop("id")
 
-        action = d.pop("action")
+        description = d.pop("description")
 
-        filepath = d.pop("filepath")
+        sg_file_animation = d.pop("sg_file_animation")
 
-        tags = d.pop("tags")
+        tags = cast(List[Any], d.pop("tags"))
 
         motion = cls(
-            sg_id=sg_id,
-            action=action,
-            filepath=filepath,
+            id=id,
+            description=description,
+            sg_file_animation=sg_file_animation,
             tags=tags,
         )
 
