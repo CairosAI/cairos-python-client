@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cairos-python-lowlevel"
+name = "cairos_python_lowlevel"
 version = "0.1.0"
 description = "A client library for accessing Cairos API"
 authors = []
