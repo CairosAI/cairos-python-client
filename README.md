@@ -8,12 +8,12 @@ It allows logging in to, and using the Cairos API.
 
 ``` python
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import ChatOutput
-from cairos_houdini_client import
+from cairos_houdini_client import list_threads, request_motions_sequence, motions_from_chat_output
 client = login("http://example.com:8000", "bob", "bobspassword")
 
 threads: List[ChatThreadInList] = list_threads(client)
 chat_output: ChatOutput = request_motions_sequence("Running on all fours", threads[0].id, client)
-motions = Motions(**json.loads(chat_output.btl_objs).get('motions'))
+motions = motions_from_chat_output(chat_output)
 ```
 
 ## Using the async functions
