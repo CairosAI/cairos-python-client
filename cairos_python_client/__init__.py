@@ -49,7 +49,7 @@ def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatO
             thread_id=thread_id,
             client=client,
             body=ChatInput(
-                prompt=HumanMessage(content=prompt),
+                prompt=HumanMessage(content=prompt, id=uuid4().hex),
                 history=[],
                 avatar=AvatarMetadata(id=uuid4(), label="Test", thumbnail=None),
                 btl_objs=[]))
@@ -63,7 +63,7 @@ def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedC
         thread_id=thread_id,
         client=client,
         body=ChatInput(
-            prompt=HumanMessage(content=prompt),
+            prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
             avatar=AvatarMetadata(id=uuid4(), label="Test", thumbnail=None),
             btl_objs=[]))
