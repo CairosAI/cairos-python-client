@@ -1,0 +1,23 @@
+import cairos_python_lowlevel
+
+def login(url: str, user: str, password: str) -> cairos_python_client.AuthenticatedClient:
+    unauth_client = cairos_python_client.Client(
+        base_url=url,
+        verify_ssl=False,
+        raise_on_unexpected_status=True)
+
+    response = login_auth_login_post.sync_detailed(
+        client=unauth_client,
+        body=BodyLoginAuthLoginPost(
+            grant_type="password",
+            username=user,
+            password=password))
+
+    print(f"response: {response}")
+    cookies = parse_cookies(response.headers.get("Set-Cookie"))
+
+    return cairos_python_client.AuthenticatedClient(
+        base_url=url,
+        token=cookies.get("id"),
+        verify_ssl=False,
+        cookies=cookies)

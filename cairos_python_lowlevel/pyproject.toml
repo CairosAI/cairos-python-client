@@ -1,14 +1,13 @@
 [tool.poetry]
-name = "cairos-python-client"
-version = "0.1.1"
+name = "cairos-python-lowlevel"
+version = "0.1.0"
 description = "A client library for accessing Cairos API"
-authors = ["Mois Moshev <mois.moshev@bottleshipvfx.com>"]
+authors = []
 readme = "README.md"
 packages = [
-    {include = "cairos_python_client"},
-    {include = "cairos_python_lowlevel"}
+    {include = "cairos_python_lowlevel"},
 ]
-include = ["CHANGELOG.md", "cairos_python_client/py.typed"]
+include = ["CHANGELOG.md", "cairos_python_lowlevel/py.typed"]
 
 
 [tool.poetry.dependencies]
