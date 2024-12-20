@@ -16,6 +16,19 @@ chat_output: ChatOutput = request_motions_sequence("Running on all fours", threa
 motions = motions_from_chat_output(chat_output)
 ```
 
+## API
+```
+def login(url: str, user: str, password: str) -> AuthenticatedClient:
+def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
+def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
+def list_threads(client: AuthenticatedClient) -> list[ChatThreadInList] | None:
+def create_thread(client: AuthenticatedClient) -> ChatThreadPublic:
+def get_thread_by_id(thread_id: str, client: AuthenticatedClient) -> ChatThreadPublic | HTTPValidationError | None:
+def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarMetadata]:
+def get_avatar(uuid: str, client: AuthenticatedClient) -> bytes:
+def motions_from_chat_output(chat_output: ChatOutput) -> Motions | None:
+```
+
 ## Using the async functions
 For the time being, the high-level interface only exposes synchronous functions.
 
