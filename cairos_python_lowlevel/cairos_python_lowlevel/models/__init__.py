@@ -9,8 +9,10 @@ from .ai_message_response_metadata import AIMessageResponseMetadata
 from .ai_message_type import AIMessageType
 from .animation import Animation
 from .avatar_metadata import AvatarMetadata
+from .avatar_public import AvatarPublic
 from .body_login_auth_login_post import BodyLoginAuthLoginPost
 from .body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
+from .body_post_avatar_avatar_new_label_post_mapping import BodyPostAvatarAvatarNewLabelPostMapping
 from .chat_input import ChatInput
 from .chat_output import ChatOutput
 from .chat_thread_in_list import ChatThreadInList
@@ -20,7 +22,6 @@ from .function_message_additional_kwargs import FunctionMessageAdditionalKwargs
 from .function_message_content_type_1_item_type_1 import FunctionMessageContentType1ItemType1
 from .function_message_response_metadata import FunctionMessageResponseMetadata
 from .function_message_type import FunctionMessageType
-from .get_avatars_avatar_get_response_200_item import GetAvatarsAvatarGetResponse200Item
 from .http_validation_error import HTTPValidationError
 from .human_message import HumanMessage
 from .human_message_additional_kwargs import HumanMessageAdditionalKwargs
@@ -53,8 +54,10 @@ __all__ = (
     "AIMessageType",
     "Animation",
     "AvatarMetadata",
+    "AvatarPublic",
     "BodyLoginAuthLoginPost",
     "BodyPostAvatarAvatarNewLabelPost",
+    "BodyPostAvatarAvatarNewLabelPostMapping",
     "ChatInput",
     "ChatOutput",
     "ChatThreadInList",
@@ -64,7 +67,6 @@ __all__ = (
     "FunctionMessageContentType1ItemType1",
     "FunctionMessageResponseMetadata",
     "FunctionMessageType",
-    "GetAvatarsAvatarGetResponse200Item",
     "HTTPValidationError",
     "HumanMessage",
     "HumanMessageAdditionalKwargs",

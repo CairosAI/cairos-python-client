@@ -10,24 +10,24 @@ T = TypeVar("T", bound="Motion")
 class Motion:
     """
     Attributes:
-        id (int):
+        sg_id (int):
         description (str):
-        sg_file_animation (str):
+        input_ (str):
         tags (List[Any]):
     """
 
-    id: int
+    sg_id: int
     description: str
-    sg_file_animation: str
+    input_: str
     tags: List[Any]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        id = self.id
+        sg_id = self.sg_id
 
         description = self.description
 
-        sg_file_animation = self.sg_file_animation
+        input_ = self.input_
 
         tags = self.tags
 
@@ -35,9 +35,9 @@ class Motion:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "id": id,
+                "sg_id": sg_id,
                 "description": description,
-                "sg_file_animation": sg_file_animation,
+                "input": input_,
                 "tags": tags,
             }
         )
@@ -47,18 +47,18 @@ class Motion:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        id = d.pop("id")
+        sg_id = d.pop("sg_id")
 
         description = d.pop("description")
 
-        sg_file_animation = d.pop("sg_file_animation")
+        input_ = d.pop("input")
 
         tags = cast(List[Any], d.pop("tags"))
 
         motion = cls(
-            id=id,
+            sg_id=sg_id,
             description=description,
-            sg_file_animation=sg_file_animation,
+            input_=input_,
             tags=tags,
         )
 

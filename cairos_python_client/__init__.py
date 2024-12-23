@@ -1,23 +1,33 @@
 from typing import Sequence
 from cairos_types.core import Motions
 import json
+
+from pathlib import Path
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient, Client
 from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
-    get_avatar_with_file_avatar_uuid_get,
+    get_avatar_avatar_uuid_get,
     get_avatars_avatar_get,
+    get_avatar_with_file_avatar_uuid_file_get,
     login_auth_login_post,
+    post_avatar_avatar_new_label_post,
     process_message_thread_thread_id_post,
     process_message_nosequence_thread_thread_id_nosequence_post,
     get_threads_thread_get,
     post_thread_thread_post,
-    get_thread_thread_thread_id_get)
+    get_thread_thread_thread_id_get,
+    delete_avatar_route_avatar_uuid_delete,
+    get_anim_anim_thread_id_trigger_msg_id_get)
 
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_new_label_post_mapping import BodyPostAvatarAvatarNewLabelPostMapping
+from cairos_python_lowlevel.cairos_python_lowlevel.types import File
 from cairos_python_lowlevel.cairos_python_lowlevel.models import BodyLoginAuthLoginPost
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import ChatOutput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_input import ChatInput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.http_validation_error import HTTPValidationError
 from cairos_python_lowlevel.cairos_python_lowlevel.models.human_message import HumanMessage
 from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_metadata import AvatarMetadata
+from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_public import AvatarPublic
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_public import ChatThreadPublic
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_in_list import ChatThreadInList
 from uuid import uuid4
@@ -54,7 +64,7 @@ def login(url: str, user: str, password: str) -> AuthenticatedClient:
         verify_ssl=False,
         cookies=cookies)
 
-def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
+def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
     """ Send a prompt to AI, receive structured output, containing animations, etc.
     """
     response = process_message_thread_thread_id_post.sync(
@@ -63,14 +73,14 @@ def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatO
             body=ChatInput(
                 prompt=HumanMessage(content=prompt, id=uuid4().hex),
                 history=[],
-                avatar=AvatarMetadata(id=uuid4(), label="Test", thumbnail=None),
+                avatar=avatar,
                 btl_objs=[]))
     if isinstance(response, ChatOutput):
         return response
     else:
         raise Exception(str(response))
 
-def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
+def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
     """ Similar to send_chat, but does not trigger a sequencing job.
     Useful for when you only want to retrieve the list of motions.
     """
@@ -80,7 +90,7 @@ def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedC
         body=ChatInput(
             prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
-            avatar=AvatarMetadata(id=uuid4(), label="Test", thumbnail=None),
+            avatar=avatar,
             btl_objs=[]))
     if isinstance(response, ChatOutput):
         return response
@@ -100,16 +110,44 @@ def get_thread_by_id(thread_id: str, client: AuthenticatedClient) -> ChatThreadP
         thread_id=thread_id,
         client=client)
 
-def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarMetadata]:
+def upload_avatar(label: str, avatar_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
+    with open(avatar_path, "rb") as f:
+        avatar = post_avatar_avatar_new_label_post.sync(
+            label=label,
+            client=client,
+            body=BodyPostAvatarAvatarNewLabelPost(
+                file=File(
+                    payload=f,
+                    file_name=f.name),
+                mapping=BodyPostAvatarAvatarNewLabelPostMapping.MIXAMO))
+
+        return avatar
+
+def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic]:
     avatar_response = get_avatars_avatar_get.sync(client=client)
     if avatar_response:
-        return list(map(
-            lambda a: AvatarMetadata(**a.to_dict()),
-            avatar_response))
+        return avatar_response
     else:
         return []
 
 def get_avatar(uuid: str, client: AuthenticatedClient) -> bytes:
-    """ Return the avatar file as bytes.
+    """ Return the avatar metadata.
     """
-    return get_avatar_with_file_avatar_uuid_get.sync_detailed(uuid=uuid, client=client).content
+    return get_avatar_avatar_uuid_get.sync_detailed(uuid=uuid, client=client).content
+
+def get_avatar_file(uuid: str, client: AuthenticatedClient) -> bytes:
+    """ Return the avatar metadata.
+    """
+    return get_avatar_with_file_avatar_uuid_file_get.sync_detailed(uuid=uuid, client=client).content
+
+def delete_avatar(uuid: str, client: AuthenticatedClient) -> None:
+    delete_avatar_route_avatar_uuid_delete.sync(uuid=uuid, client=client)
+    return None
+
+def get_animation(thread_id: str, trigger_msg_id: str, client: AuthenticatedClient) -> bytes:
+    """ Return animation as raw bytes. This is a gltf file.
+    """
+    return get_anim_anim_thread_id_trigger_msg_id_get.sync_detailed(
+        thread_id=thread_id,
+        trigger_msg_id=trigger_msg_id,
+        client=client).content

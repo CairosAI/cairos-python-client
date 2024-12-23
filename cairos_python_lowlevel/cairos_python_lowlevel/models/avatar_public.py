@@ -1,45 +1,47 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
-T = TypeVar("T", bound="AvatarMetadata")
+T = TypeVar("T", bound="AvatarPublic")
 
 
 @_attrs_define
-class AvatarMetadata:
+class AvatarPublic:
     """
     Attributes:
         id (UUID):
+        user_id (int):
         label (str):
-        thumbnail (Union[Unset, None]):
+        ingested (bool):
     """
 
     id: UUID
+    user_id: int
     label: str
-    thumbnail: Union[Unset, None] = UNSET
+    ingested: bool
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id = str(self.id)
 
+        user_id = self.user_id
+
         label = self.label
 
-        thumbnail = self.thumbnail
+        ingested = self.ingested
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "id": id,
+                "user_id": user_id,
                 "label": label,
+                "ingested": ingested,
             }
         )
-        if thumbnail is not UNSET:
-            field_dict["thumbnail"] = thumbnail
 
         return field_dict
 
@@ -48,18 +50,21 @@ class AvatarMetadata:
         d = src_dict.copy()
         id = UUID(d.pop("id"))
 
+        user_id = d.pop("user_id")
+
         label = d.pop("label")
 
-        thumbnail = d.pop("thumbnail", UNSET)
+        ingested = d.pop("ingested")
 
-        avatar_metadata = cls(
+        avatar_public = cls(
             id=id,
+            user_id=user_id,
             label=label,
-            thumbnail=thumbnail,
+            ingested=ingested,
         )
 
-        avatar_metadata.additional_properties = d
-        return avatar_metadata
+        avatar_public.additional_properties = d
+        return avatar_public
 
     @property
     def additional_keys(self) -> List[str]:
