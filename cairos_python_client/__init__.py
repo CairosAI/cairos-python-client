@@ -1,7 +1,6 @@
 from typing import Sequence
 from cairos_types.core import Motions
 import json
-from attrs import define
 
 from pathlib import Path
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient, Client
@@ -33,10 +32,6 @@ from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_public imp
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_in_list import ChatThreadInList
 from uuid import uuid4
 
-@define
-class CairosClient(AuthenticatedClient):
-    user_id: str = ""
-
 def parse_cookies(cookies: str | None) -> dict[str, str]:
     if cookies is None:
         return {}
@@ -48,7 +43,7 @@ def parse_cookies(cookies: str | None) -> dict[str, str]:
 def motions_from_chat_output(chat_output: ChatOutput) -> Motions | None:
     return Motions(**json.loads(chat_output.btl_objs).get('motions'))
 
-def login(url: str, user: str, password: str) -> CairosClient:
+def login(url: str, user: str, password: str) -> AuthenticatedClient:
     unauth_client = Client(
         base_url=url,
         verify_ssl=False,
@@ -63,15 +58,13 @@ def login(url: str, user: str, password: str) -> CairosClient:
 
     print(f"response: {response}")
     cookies = parse_cookies(response.headers.get("Set-Cookie"))
-    user_id = json.loads(response.content)["name"]
-    return CairosClient(
+    return AuthenticatedClient(
         base_url=url,
         token=cookies.get("id", ""),
         verify_ssl=False,
-        user_id=user_id,
         cookies=cookies)
 
-def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: CairosClient) -> ChatOutput:
+def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
     """ Send a prompt to AI, receive structured output, containing animations, etc.
     """
     response = process_message_thread_thread_id_post.sync(
@@ -87,7 +80,7 @@ def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: Cairo
     else:
         raise Exception(str(response))
 
-def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata, client: CairosClient) -> ChatOutput:
+def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
     """ Similar to send_chat, but does not trigger a sequencing job.
     Useful for when you only want to retrieve the list of motions.
     """
@@ -104,20 +97,20 @@ def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata
     else:
         raise Exception(str(response))
 
-def list_threads(client: CairosClient) -> list[ChatThreadInList] | None:
+def list_threads(client: AuthenticatedClient) -> list[ChatThreadInList] | None:
     return get_threads_thread_get.sync(client=client)
 
-def create_thread(client: CairosClient) -> ChatThreadPublic:
+def create_thread(client: AuthenticatedClient) -> ChatThreadPublic:
     thread = (post_thread_thread_post.sync(client=client))
     assert thread is not None, "Thread should not be empty"
     return thread
 
-def get_thread_by_id(thread_id: str, client: CairosClient) -> ChatThreadPublic | HTTPValidationError | None:
+def get_thread_by_id(thread_id: str, client: AuthenticatedClient) -> ChatThreadPublic | HTTPValidationError | None:
     return get_thread_thread_thread_id_get.sync(
         thread_id=thread_id,
         client=client)
 
-def upload_avatar(label: str, avatar_path: Path, client: CairosClient) -> AvatarPublic | HTTPValidationError | None:
+def upload_avatar(label: str, avatar_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     with open(avatar_path, "rb") as f:
         avatar = post_avatar_avatar_new_label_post.sync(
             label=label,
@@ -130,28 +123,28 @@ def upload_avatar(label: str, avatar_path: Path, client: CairosClient) -> Avatar
 
         return avatar
 
-def list_avatars(client: CairosClient) -> Sequence[AvatarPublic]:
+def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic]:
     avatar_response = get_avatars_avatar_get.sync(client=client)
     if avatar_response:
         return avatar_response
     else:
         return []
 
-def get_avatar(uuid: str, client: CairosClient) -> bytes:
+def get_avatar(uuid: str, client: AuthenticatedClient) -> bytes:
     """ Return the avatar metadata.
     """
     return get_avatar_avatar_uuid_get.sync_detailed(uuid=uuid, client=client).content
 
-def get_avatar_file(uuid: str, client: CairosClient) -> bytes:
+def get_avatar_file(uuid: str, client: AuthenticatedClient) -> bytes:
     """ Return the avatar metadata.
     """
     return get_avatar_with_file_avatar_uuid_file_get.sync_detailed(uuid=uuid, client=client).content
 
-def delete_avatar(uuid: str, client: CairosClient) -> None:
+def delete_avatar(uuid: str, client: AuthenticatedClient) -> None:
     delete_avatar_route_avatar_uuid_delete.sync(uuid=uuid, client=client)
     return None
 
-def get_animation(thread_id: str, trigger_msg_id: str, client: CairosClient) -> bytes:
+def get_animation(thread_id: str, trigger_msg_id: str, client: AuthenticatedClient) -> bytes:
     """ Return animation as raw bytes. This is a gltf file.
     """
     return get_anim_anim_thread_id_trigger_msg_id_get.sync_detailed(
