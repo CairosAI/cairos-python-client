@@ -40,21 +40,29 @@ def test_list_threads(logged_in_client: AuthenticatedClient):
     assert threads and len(threads) > 0, f"No threads found {threads}"
     assert threads[0].id is not None, f"Thread incorrect {threads[0]}"
 
-@pytest.mark.dependency(name="test_upload_avatar")
+@pytest.mark.dependency(name="test_create_avatar")
+def test_create_avatar(
+        logged_in_client: AuthenticatedClient):
+    avatar = cairos_python_client.create_avatar(
+        "Test label",
+        client=logged_in_client)
+
+    assert avatar, "Avatar was not created"
+
+    return avatar
+
+@pytest.mark.dependency(name="test_upload_avatar", depends=["test_create_avatar"])
 def test_upload_avatar(
         logged_in_client: AuthenticatedClient,
         avatar_path: Path):
     avatars = cairos_python_client.list_avatars(client=logged_in_client)
     if len(avatars) > 0:
-        try:
-            cairos_python_client.delete_avatar(
-                uuid=avatars[0].id.hex,
-                client=logged_in_client)
-        except:
-            print(f"----------\nError while deleting avatar")
+        avatar = avatars[0]
+    else:
+        raise ValueError("Avatars are empty")
 
     response = cairos_python_client.upload_avatar(
-        "test",
+        uuid=avatar.id.hex,
         avatar_path=avatar_path,
         client=logged_in_client)
     print(f"----------\nAvatar upload: {response}\n")
