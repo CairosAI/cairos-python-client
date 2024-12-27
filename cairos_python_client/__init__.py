@@ -9,7 +9,9 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     get_avatars_avatar_get,
     get_avatar_with_file_avatar_uuid_file_get,
     login_auth_login_post,
-    post_avatar_avatar_new_label_post,
+    create_blank_avatar_avatar_new_label_post,
+    post_avatar_avatar_uuid_upload_post,
+    update_avatar_mapping_avatar_uuid_mapping_patch,
     process_message_thread_thread_id_post,
     process_message_nosequence_thread_thread_id_nosequence_post,
     get_threads_thread_get,
@@ -18,10 +20,11 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     delete_avatar_route_avatar_uuid_delete,
     get_anim_anim_thread_id_trigger_msg_id_get)
 
-from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_new_label_post_mapping import BodyPostAvatarAvatarNewLabelPostMapping
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch import BodyUpdateAvatarMappingAvatarUuidMappingPatch
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch_mapping import BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping
 from cairos_python_lowlevel.cairos_python_lowlevel.types import File
 from cairos_python_lowlevel.cairos_python_lowlevel.models import BodyLoginAuthLoginPost
-from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import ChatOutput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_input import ChatInput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.http_validation_error import HTTPValidationError
@@ -110,18 +113,37 @@ def get_thread_by_id(thread_id: str, client: AuthenticatedClient) -> ChatThreadP
         thread_id=thread_id,
         client=client)
 
-def upload_avatar(label: str, avatar_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
+def create_avatar(label: str, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
+    return create_blank_avatar_avatar_new_label_post.sync(
+        label=label,
+        client=client)
+
+def upload_avatar(uuid: str, avatar_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     with open(avatar_path, "rb") as f:
-        avatar = post_avatar_avatar_new_label_post.sync(
-            label=label,
+        return post_avatar_avatar_uuid_upload_post.sync(
+            uuid=uuid,
             client=client,
-            body=BodyPostAvatarAvatarNewLabelPost(
+            body=BodyPostAvatarAvatarUuidUploadPost(
                 file=File(
                     payload=f,
-                    file_name=f.name),
-                mapping=BodyPostAvatarAvatarNewLabelPostMapping.MIXAMO))
+                    file_name=f.name)))
 
-        return avatar
+def upload_avatar_mapping(uuid: str, mapping_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
+    with open(mapping_path, "rb") as f:
+        return update_avatar_mapping_avatar_uuid_mapping_patch.sync(
+            uuid=uuid,
+            client=client,
+            body=BodyUpdateAvatarMappingAvatarUuidMappingPatch(
+                mapping_file=File(
+                    payload=f,
+                    file_name=f.name)))
+
+def set_avatar_mapping_preset(uuid: str, mapping: BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
+    return update_avatar_mapping_avatar_uuid_mapping_patch.sync(
+        uuid=uuid,
+        client=client,
+        body=BodyUpdateAvatarMappingAvatarUuidMappingPatch(
+            mapping=mapping))
 
 def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic]:
     avatar_response = get_avatars_avatar_get.sync(client=client)
