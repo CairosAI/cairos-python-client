@@ -11,8 +11,11 @@ from .animation import Animation
 from .avatar_metadata import AvatarMetadata
 from .avatar_public import AvatarPublic
 from .body_login_auth_login_post import BodyLoginAuthLoginPost
-from .body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
-from .body_post_avatar_avatar_new_label_post_mapping import BodyPostAvatarAvatarNewLabelPostMapping
+from .body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
+from .body_update_avatar_mapping_avatar_uuid_mapping_patch import BodyUpdateAvatarMappingAvatarUuidMappingPatch
+from .body_update_avatar_mapping_avatar_uuid_mapping_patch_mapping import (
+    BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping,
+)
 from .chat_input import ChatInput
 from .chat_output import ChatOutput
 from .chat_thread_in_list import ChatThreadInList
@@ -56,8 +59,9 @@ __all__ = (
     "AvatarMetadata",
     "AvatarPublic",
     "BodyLoginAuthLoginPost",
-    "BodyPostAvatarAvatarNewLabelPost",
-    "BodyPostAvatarAvatarNewLabelPostMapping",
+    "BodyPostAvatarAvatarUuidUploadPost",
+    "BodyUpdateAvatarMappingAvatarUuidMappingPatch",
+    "BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping",
     "ChatInput",
     "ChatOutput",
     "ChatThreadInList",

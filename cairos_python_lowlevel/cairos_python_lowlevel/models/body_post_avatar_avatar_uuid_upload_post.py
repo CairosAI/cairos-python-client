@@ -4,35 +4,29 @@ from typing import Any, Dict, List, Type, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.body_post_avatar_avatar_new_label_post_mapping import BodyPostAvatarAvatarNewLabelPostMapping
 from ..types import File
 
-T = TypeVar("T", bound="BodyPostAvatarAvatarNewLabelPost")
+T = TypeVar("T", bound="BodyPostAvatarAvatarUuidUploadPost")
 
 
 @_attrs_define
-class BodyPostAvatarAvatarNewLabelPost:
+class BodyPostAvatarAvatarUuidUploadPost:
     """
     Attributes:
         file (File):
-        mapping (BodyPostAvatarAvatarNewLabelPostMapping):
     """
 
     file: File
-    mapping: BodyPostAvatarAvatarNewLabelPostMapping
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         file = self.file.to_tuple()
-
-        mapping = self.mapping.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "file": file,
-                "mapping": mapping,
             }
         )
 
@@ -41,8 +35,6 @@ class BodyPostAvatarAvatarNewLabelPost:
     def to_multipart(self) -> Dict[str, Any]:
         file = self.file.to_tuple()
 
-        mapping = (None, str(self.mapping.value).encode(), "text/plain")
-
         field_dict: Dict[str, Any] = {}
         for prop_name, prop in self.additional_properties.items():
             field_dict[prop_name] = (None, str(prop).encode(), "text/plain")
@@ -50,7 +42,6 @@ class BodyPostAvatarAvatarNewLabelPost:
         field_dict.update(
             {
                 "file": file,
-                "mapping": mapping,
             }
         )
 
@@ -61,15 +52,12 @@ class BodyPostAvatarAvatarNewLabelPost:
         d = src_dict.copy()
         file = File(payload=BytesIO(d.pop("file")))
 
-        mapping = BodyPostAvatarAvatarNewLabelPostMapping(d.pop("mapping"))
-
-        body_post_avatar_avatar_new_label_post = cls(
+        body_post_avatar_avatar_uuid_upload_post = cls(
             file=file,
-            mapping=mapping,
         )
 
-        body_post_avatar_avatar_new_label_post.additional_properties = d
-        return body_post_avatar_avatar_new_label_post
+        body_post_avatar_avatar_uuid_upload_post.additional_properties = d
+        return body_post_avatar_avatar_uuid_upload_post
 
     @property
     def additional_keys(self) -> List[str]:

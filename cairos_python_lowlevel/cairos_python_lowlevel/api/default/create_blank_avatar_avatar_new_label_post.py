@@ -6,50 +6,28 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.avatar_public import AvatarPublic
-from ...models.body_post_avatar_avatar_new_label_post import BodyPostAvatarAvatarNewLabelPost
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, File, FileJsonType, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     label: str,
-    *,
-    body: BodyPostAvatarAvatarNewLabelPost,
-    mapping_file: Union[Unset, File] = UNSET,
 ) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
-
-    params: Dict[str, Any] = {}
-
-    json_mapping_file: Union[Unset, FileJsonType] = UNSET
-    if not isinstance(mapping_file, Unset):
-        json_mapping_file = mapping_file.to_tuple()
-
-    params["mapping_file"] = json_mapping_file
-
-    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
-
     _kwargs: Dict[str, Any] = {
         "method": "post",
         "url": f"/avatar/new/{label}",
-        "params": params,
     }
 
-    _body = body.to_multipart()
-
-    _kwargs["files"] = _body
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
-    if response.status_code == 202:
-        response_202 = AvatarPublic.from_dict(response.json())
+    if response.status_code == 201:
+        response_201 = AvatarPublic.from_dict(response.json())
 
-        return response_202
+        return response_201
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -75,15 +53,11 @@ def sync_detailed(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyPostAvatarAvatarNewLabelPost,
-    mapping_file: Union[Unset, File] = UNSET,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
-    """Post Avatar
+    """Create Blank Avatar
 
     Args:
         label (str):
-        mapping_file (Union[Unset, File]):
-        body (BodyPostAvatarAvatarNewLabelPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -95,8 +69,6 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         label=label,
-        body=body,
-        mapping_file=mapping_file,
     )
 
     response = client.get_httpx_client().request(
@@ -110,15 +82,11 @@ def sync(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyPostAvatarAvatarNewLabelPost,
-    mapping_file: Union[Unset, File] = UNSET,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
-    """Post Avatar
+    """Create Blank Avatar
 
     Args:
         label (str):
-        mapping_file (Union[Unset, File]):
-        body (BodyPostAvatarAvatarNewLabelPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -131,8 +99,6 @@ def sync(
     return sync_detailed(
         label=label,
         client=client,
-        body=body,
-        mapping_file=mapping_file,
     ).parsed
 
 
@@ -140,15 +106,11 @@ async def asyncio_detailed(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyPostAvatarAvatarNewLabelPost,
-    mapping_file: Union[Unset, File] = UNSET,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
-    """Post Avatar
+    """Create Blank Avatar
 
     Args:
         label (str):
-        mapping_file (Union[Unset, File]):
-        body (BodyPostAvatarAvatarNewLabelPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -160,8 +122,6 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         label=label,
-        body=body,
-        mapping_file=mapping_file,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -173,15 +133,11 @@ async def asyncio(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: BodyPostAvatarAvatarNewLabelPost,
-    mapping_file: Union[Unset, File] = UNSET,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
-    """Post Avatar
+    """Create Blank Avatar
 
     Args:
         label (str):
-        mapping_file (Union[Unset, File]):
-        body (BodyPostAvatarAvatarNewLabelPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -195,7 +151,5 @@ async def asyncio(
         await asyncio_detailed(
             label=label,
             client=client,
-            body=body,
-            mapping_file=mapping_file,
         )
     ).parsed

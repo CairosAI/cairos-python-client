@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class BodyPostAvatarAvatarNewLabelPostMapping(str, Enum):
+class BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping(str, Enum):
     MIXAMO = "mixamo"
 
     def __str__(self) -> str:
