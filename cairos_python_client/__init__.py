@@ -17,6 +17,7 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     get_threads_thread_get,
     post_thread_thread_post,
     get_thread_thread_thread_id_get,
+    get_anim_file_anim_thread_id_trigger_msg_id_file_get,
     delete_avatar_route_avatar_uuid_delete,
     get_anim_anim_thread_id_trigger_msg_id_get)
 
@@ -169,7 +170,7 @@ def delete_avatar(uuid: str, client: AuthenticatedClient) -> None:
 def get_animation(thread_id: str, trigger_msg_id: str, client: AuthenticatedClient) -> bytes:
     """ Return animation as raw bytes. This is a gltf file.
     """
-    return get_anim_anim_thread_id_trigger_msg_id_get.sync_detailed(
+    return get_anim_file_anim_thread_id_trigger_msg_id_file_get.sync_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         client=client).content
