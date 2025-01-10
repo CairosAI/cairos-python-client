@@ -6,7 +6,6 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.orm_animation import OrmAnimation
 from ...types import Response
 
 
@@ -16,7 +15,7 @@ def _get_kwargs(
 ) -> Dict[str, Any]:
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}",
+        "url": f"/anim/{thread_id}/{trigger_msg_id}/test",
     }
 
     return _kwargs
@@ -24,10 +23,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == 200:
-        response_200 = OrmAnimation.from_dict(response.json())
-
+        response_200 = response.json()
         return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -41,7 +39,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -55,8 +53,8 @@ def sync_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Anim Test
 
     Args:
         thread_id (str):
@@ -67,7 +65,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, OrmAnimation]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
@@ -87,8 +85,8 @@ def sync(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Anim Test
 
     Args:
         thread_id (str):
@@ -99,7 +97,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, OrmAnimation]
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
@@ -114,8 +112,8 @@ async def asyncio_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Get Anim Test
 
     Args:
         thread_id (str):
@@ -126,7 +124,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, OrmAnimation]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
@@ -144,8 +142,8 @@ async def asyncio(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Get Anim Test
 
     Args:
         thread_id (str):
@@ -156,7 +154,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, OrmAnimation]
+        Union[Any, HTTPValidationError]
     """
 
     return (

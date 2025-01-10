@@ -5,6 +5,9 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.body_export_anim_anim_thread_id_trigger_msg_id_export_post import (
+    BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+)
 from ...models.http_validation_error import HTTPValidationError
 from ...models.orm_animation import OrmAnimation
 from ...types import Response
@@ -13,22 +16,32 @@ from ...types import Response
 def _get_kwargs(
     thread_id: str,
     trigger_msg_id: str,
+    *,
+    body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
 ) -> Dict[str, Any]:
+    headers: Dict[str, Any] = {}
+
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}",
+        "method": "post",
+        "url": f"/anim/{thread_id}/{trigger_msg_id}/export",
     }
 
+    _body = body.to_dict()
+
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    if response.status_code == 200:
-        response_200 = OrmAnimation.from_dict(response.json())
+    if response.status_code == 202:
+        response_202 = OrmAnimation.from_dict(response.json())
 
-        return response_200
+        return response_202
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -55,12 +68,14 @@ def sync_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+    """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -73,6 +88,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -87,12 +103,14 @@ def sync(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+    """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -106,6 +124,7 @@ def sync(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         client=client,
+        body=body,
     ).parsed
 
 
@@ -114,12 +133,14 @@ async def asyncio_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+    """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -132,6 +153,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
+        body=body,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -144,12 +166,14 @@ async def asyncio(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Get Anim
+    """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -164,5 +188,6 @@ async def asyncio(
             thread_id=thread_id,
             trigger_msg_id=trigger_msg_id,
             client=client,
+            body=body,
         )
     ).parsed
