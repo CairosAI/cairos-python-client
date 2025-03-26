@@ -15,12 +15,17 @@ def _get_kwargs(
     uuid: str,
     *,
     body: BodyPostAvatarAvatarUuidUploadPost,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
+
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
         "url": f"/avatar/{uuid}/upload",
+        "cookies": cookies,
     }
 
     _body = body.to_multipart()
@@ -64,11 +69,13 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -82,6 +89,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         uuid=uuid,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -96,11 +104,13 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -115,6 +125,7 @@ def sync(
         uuid=uuid,
         client=client,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -123,11 +134,13 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -141,6 +154,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         uuid=uuid,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -153,11 +167,13 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -173,5 +189,6 @@ async def asyncio(
             uuid=uuid,
             client=client,
             body=body,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

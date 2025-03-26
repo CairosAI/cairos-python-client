@@ -9,9 +9,9 @@ if TYPE_CHECKING:
     from ..models.ai_message import AIMessage
     from ..models.animation import Animation
     from ..models.avatar_metadata import AvatarMetadata
-    from ..models.function_message import FunctionMessage
     from ..models.human_message import HumanMessage
     from ..models.system_message import SystemMessage
+    from ..models.tool_message import ToolMessage
 
 
 T = TypeVar("T", bound="ChatInput")
@@ -43,14 +43,14 @@ class ChatInput:
                     # Instantiate a chat model and invoke it with the messages
                     model = ...
                     print(model.invoke(messages))
-        history (List[Union['AIMessage', 'FunctionMessage', 'HumanMessage', 'SystemMessage']]):
+        history (List[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
         avatar (AvatarMetadata):
         btl_objs (List[Any]):
         animation (Union[Unset, List['Animation']]):
     """
 
     prompt: "HumanMessage"
-    history: List[Union["AIMessage", "FunctionMessage", "HumanMessage", "SystemMessage"]]
+    history: List[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
     avatar: "AvatarMetadata"
     btl_objs: List[Any]
     animation: Union[Unset, List["Animation"]] = UNSET
@@ -108,9 +108,9 @@ class ChatInput:
         from ..models.ai_message import AIMessage
         from ..models.animation import Animation
         from ..models.avatar_metadata import AvatarMetadata
-        from ..models.function_message import FunctionMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
+        from ..models.tool_message import ToolMessage
 
         d = src_dict.copy()
         prompt = HumanMessage.from_dict(d.pop("prompt"))
@@ -119,9 +119,7 @@ class ChatInput:
         _history = d.pop("history")
         for history_item_data in _history:
 
-            def _parse_history_item(
-                data: object,
-            ) -> Union["AIMessage", "FunctionMessage", "HumanMessage", "SystemMessage"]:
+            def _parse_history_item(data: object) -> Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]:
                 try:
                     if not isinstance(data, dict):
                         raise TypeError()
@@ -148,7 +146,7 @@ class ChatInput:
                     pass
                 if not isinstance(data, dict):
                     raise TypeError()
-                history_item_type_3 = FunctionMessage.from_dict(data)
+                history_item_type_3 = ToolMessage.from_dict(data)
 
                 return history_item_type_3
 

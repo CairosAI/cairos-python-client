@@ -6,13 +6,21 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.avatar_public import AvatarPublic
+from ...models.http_validation_error import HTTPValidationError
 from ...types import Response
 
 
-def _get_kwargs() -> Dict[str, Any]:
+def _get_kwargs(
+    *,
+    outseta_nocode_access_token: str,
+) -> Dict[str, Any]:
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
     _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": "/avatar",
+        "cookies": cookies,
     }
 
     return _kwargs
@@ -20,7 +28,7 @@ def _get_kwargs() -> Dict[str, Any]:
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[List["AvatarPublic"]]:
+) -> Optional[Union[HTTPValidationError, List["AvatarPublic"]]]:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -30,6 +38,10 @@ def _parse_response(
             response_200.append(response_200_item)
 
         return response_200
+    if response.status_code == 422:
+        response_422 = HTTPValidationError.from_dict(response.json())
+
+        return response_422
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -38,7 +50,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[List["AvatarPublic"]]:
+) -> Response[Union[HTTPValidationError, List["AvatarPublic"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -50,18 +62,24 @@ def _build_response(
 def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[List["AvatarPublic"]]:
+    outseta_nocode_access_token: str,
+) -> Response[Union[HTTPValidationError, List["AvatarPublic"]]]:
     """Get Avatars
+
+    Args:
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['AvatarPublic']]
+        Response[Union[HTTPValidationError, List['AvatarPublic']]]
     """
 
-    kwargs = _get_kwargs()
+    kwargs = _get_kwargs(
+        outseta_nocode_access_token=outseta_nocode_access_token,
+    )
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -73,37 +91,48 @@ def sync_detailed(
 def sync(
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[List["AvatarPublic"]]:
+    outseta_nocode_access_token: str,
+) -> Optional[Union[HTTPValidationError, List["AvatarPublic"]]]:
     """Get Avatars
+
+    Args:
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['AvatarPublic']
+        Union[HTTPValidationError, List['AvatarPublic']]
     """
 
     return sync_detailed(
         client=client,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Response[List["AvatarPublic"]]:
+    outseta_nocode_access_token: str,
+) -> Response[Union[HTTPValidationError, List["AvatarPublic"]]]:
     """Get Avatars
+
+    Args:
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[List['AvatarPublic']]
+        Response[Union[HTTPValidationError, List['AvatarPublic']]]
     """
 
-    kwargs = _get_kwargs()
+    kwargs = _get_kwargs(
+        outseta_nocode_access_token=outseta_nocode_access_token,
+    )
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -113,19 +142,24 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
-) -> Optional[List["AvatarPublic"]]:
+    outseta_nocode_access_token: str,
+) -> Optional[Union[HTTPValidationError, List["AvatarPublic"]]]:
     """Get Avatars
+
+    Args:
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        List['AvatarPublic']
+        Union[HTTPValidationError, List['AvatarPublic']]
     """
 
     return (
         await asyncio_detailed(
             client=client,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

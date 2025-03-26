@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, cast
+from typing import Any, Dict, List, Type, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,13 +13,11 @@ class Motion:
         sg_id (int):
         description (str):
         input_ (str):
-        tags (List[Any]):
     """
 
     sg_id: int
     description: str
     input_: str
-    tags: List[Any]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -29,8 +27,6 @@ class Motion:
 
         input_ = self.input_
 
-        tags = self.tags
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -38,7 +34,6 @@ class Motion:
                 "sg_id": sg_id,
                 "description": description,
                 "input": input_,
-                "tags": tags,
             }
         )
 
@@ -53,13 +48,10 @@ class Motion:
 
         input_ = d.pop("input")
 
-        tags = cast(List[Any], d.pop("tags"))
-
         motion = cls(
             sg_id=sg_id,
             description=description,
             input_=input_,
-            tags=tags,
         )
 
         motion.additional_properties = d

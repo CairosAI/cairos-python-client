@@ -12,13 +12,13 @@ class AvatarPublic:
     """
     Attributes:
         id (UUID):
-        user_id (int):
+        user_id (str):
         label (str):
         ingested (bool):
     """
 
     id: UUID
-    user_id: int
+    user_id: str
     label: str
     ingested: bool
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)

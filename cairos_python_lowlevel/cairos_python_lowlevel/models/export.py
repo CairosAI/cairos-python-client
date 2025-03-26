@@ -16,7 +16,8 @@ class Export:
         job_thread (str):
         job_trigger (UUID):
         avatar_id (UUID):
-        avatar_user_id (int):
+        avatar_user_id (str):
+        user_id (str):
         created_at (datetime.datetime):
         filepath (str):
     """
@@ -24,7 +25,8 @@ class Export:
     job_thread: str
     job_trigger: UUID
     avatar_id: UUID
-    avatar_user_id: int
+    avatar_user_id: str
+    user_id: str
     created_at: datetime.datetime
     filepath: str
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -38,6 +40,8 @@ class Export:
 
         avatar_user_id = self.avatar_user_id
 
+        user_id = self.user_id
+
         created_at = self.created_at.isoformat()
 
         filepath = self.filepath
@@ -50,6 +54,7 @@ class Export:
                 "job_trigger": job_trigger,
                 "avatar_id": avatar_id,
                 "avatar_user_id": avatar_user_id,
+                "user_id": user_id,
                 "created_at": created_at,
                 "filepath": filepath,
             }
@@ -68,6 +73,8 @@ class Export:
 
         avatar_user_id = d.pop("avatar_user_id")
 
+        user_id = d.pop("user_id")
+
         created_at = isoparse(d.pop("created_at"))
 
         filepath = d.pop("filepath")
@@ -77,6 +84,7 @@ class Export:
             job_trigger=job_trigger,
             avatar_id=avatar_id,
             avatar_user_id=avatar_user_id,
+            user_id=user_id,
             created_at=created_at,
             filepath=filepath,
         )

@@ -18,12 +18,17 @@ def _get_kwargs(
     trigger_msg_id: str,
     *,
     body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
+
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
         "url": f"/anim/{thread_id}/{trigger_msg_id}/export",
+        "cookies": cookies,
     }
 
     _body = body.to_dict()
@@ -69,12 +74,14 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
     """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
         body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
@@ -89,6 +96,7 @@ def sync_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -104,12 +112,14 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
     """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
         body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
@@ -125,6 +135,7 @@ def sync(
         trigger_msg_id=trigger_msg_id,
         client=client,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -134,12 +145,14 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
     """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
         body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
@@ -154,6 +167,7 @@ async def asyncio_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -167,12 +181,14 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: BodyExportAnimAnimThreadIdTriggerMsgIdExportPost,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
     """Export Anim
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
         body (BodyExportAnimAnimThreadIdTriggerMsgIdExportPost):
 
     Raises:
@@ -189,5 +205,6 @@ async def asyncio(
             trigger_msg_id=trigger_msg_id,
             client=client,
             body=body,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

@@ -16,17 +16,21 @@ class OrmAnimation:
         job_thread (str):
         job_trigger (UUID):
         avatar_id (UUID):
-        avatar_user_id (int):
+        avatar_user_id (str):
+        user_id (str):
         created_at (datetime.datetime):
-        filepath (str):
+        filepath_gltf (str):
+        filepath_bgeo (str):
     """
 
     job_thread: str
     job_trigger: UUID
     avatar_id: UUID
-    avatar_user_id: int
+    avatar_user_id: str
+    user_id: str
     created_at: datetime.datetime
-    filepath: str
+    filepath_gltf: str
+    filepath_bgeo: str
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -38,9 +42,13 @@ class OrmAnimation:
 
         avatar_user_id = self.avatar_user_id
 
+        user_id = self.user_id
+
         created_at = self.created_at.isoformat()
 
-        filepath = self.filepath
+        filepath_gltf = self.filepath_gltf
+
+        filepath_bgeo = self.filepath_bgeo
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -50,8 +58,10 @@ class OrmAnimation:
                 "job_trigger": job_trigger,
                 "avatar_id": avatar_id,
                 "avatar_user_id": avatar_user_id,
+                "user_id": user_id,
                 "created_at": created_at,
-                "filepath": filepath,
+                "filepath_gltf": filepath_gltf,
+                "filepath_bgeo": filepath_bgeo,
             }
         )
 
@@ -68,17 +78,23 @@ class OrmAnimation:
 
         avatar_user_id = d.pop("avatar_user_id")
 
+        user_id = d.pop("user_id")
+
         created_at = isoparse(d.pop("created_at"))
 
-        filepath = d.pop("filepath")
+        filepath_gltf = d.pop("filepath_gltf")
+
+        filepath_bgeo = d.pop("filepath_bgeo")
 
         orm_animation = cls(
             job_thread=job_thread,
             job_trigger=job_trigger,
             avatar_id=avatar_id,
             avatar_user_id=avatar_user_id,
+            user_id=user_id,
             created_at=created_at,
-            filepath=filepath,
+            filepath_gltf=filepath_gltf,
+            filepath_bgeo=filepath_bgeo,
         )
 
         orm_animation.additional_properties = d

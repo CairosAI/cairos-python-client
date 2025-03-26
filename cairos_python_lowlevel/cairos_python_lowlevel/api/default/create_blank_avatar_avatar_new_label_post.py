@@ -12,10 +12,16 @@ from ...types import Response
 
 def _get_kwargs(
     label: str,
+    *,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
     _kwargs: Dict[str, Any] = {
         "method": "post",
         "url": f"/avatar/new/{label}",
+        "cookies": cookies,
     }
 
     return _kwargs
@@ -53,11 +59,13 @@ def sync_detailed(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Create Blank Avatar
 
     Args:
         label (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -69,6 +77,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         label=label,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -82,11 +91,13 @@ def sync(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Create Blank Avatar
 
     Args:
         label (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -99,6 +110,7 @@ def sync(
     return sync_detailed(
         label=label,
         client=client,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -106,11 +118,13 @@ async def asyncio_detailed(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Create Blank Avatar
 
     Args:
         label (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -122,6 +136,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         label=label,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -133,11 +148,13 @@ async def asyncio(
     label: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Create Blank Avatar
 
     Args:
         label (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -151,5 +168,6 @@ async def asyncio(
         await asyncio_detailed(
             label=label,
             client=client,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

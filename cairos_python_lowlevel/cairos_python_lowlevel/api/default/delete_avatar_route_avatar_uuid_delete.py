@@ -11,10 +11,16 @@ from ...types import Response
 
 def _get_kwargs(
     uuid: str,
+    *,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
     _kwargs: Dict[str, Any] = {
         "method": "delete",
         "url": f"/avatar/{uuid}",
+        "cookies": cookies,
     }
 
     return _kwargs
@@ -51,11 +57,13 @@ def sync_detailed(
     uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Delete Avatar Route
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -67,6 +75,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         uuid=uuid,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -80,11 +89,13 @@ def sync(
     uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Delete Avatar Route
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -97,6 +108,7 @@ def sync(
     return sync_detailed(
         uuid=uuid,
         client=client,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -104,11 +116,13 @@ async def asyncio_detailed(
     uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Delete Avatar Route
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -120,6 +134,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         uuid=uuid,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -131,11 +146,13 @@ async def asyncio(
     uuid: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Delete Avatar Route
 
     Args:
         uuid (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -149,5 +166,6 @@ async def asyncio(
         await asyncio_detailed(
             uuid=uuid,
             client=client,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

@@ -15,12 +15,17 @@ def _get_kwargs(
     thread_id: str,
     *,
     body: ChatInput,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
+
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
         "url": f"/thread/{thread_id}",
+        "cookies": cookies,
     }
 
     _body = body.to_dict()
@@ -65,11 +70,13 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[ChatOutput, HTTPValidationError]]:
     """Process Message
 
     Args:
         thread_id (str):
+        outseta_nocode_access_token (str):
         body (ChatInput):
 
     Raises:
@@ -83,6 +90,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -97,11 +105,13 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[ChatOutput, HTTPValidationError]]:
     """Process Message
 
     Args:
         thread_id (str):
+        outseta_nocode_access_token (str):
         body (ChatInput):
 
     Raises:
@@ -116,6 +126,7 @@ def sync(
         thread_id=thread_id,
         client=client,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -124,11 +135,13 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
+    outseta_nocode_access_token: str,
 ) -> Response[Union[ChatOutput, HTTPValidationError]]:
     """Process Message
 
     Args:
         thread_id (str):
+        outseta_nocode_access_token (str):
         body (ChatInput):
 
     Raises:
@@ -142,6 +155,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         body=body,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -154,11 +168,13 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[ChatOutput, HTTPValidationError]]:
     """Process Message
 
     Args:
         thread_id (str):
+        outseta_nocode_access_token (str):
         body (ChatInput):
 
     Raises:
@@ -174,5 +190,6 @@ async def asyncio(
             thread_id=thread_id,
             client=client,
             body=body,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

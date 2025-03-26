@@ -6,7 +6,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.ai_message_public_role import AIMessagePublicRole
+from ..models.ai_message_public_type import AIMessagePublicType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AIMessagePublic")
@@ -19,13 +19,13 @@ class AIMessagePublic:
         id (UUID):
         content (str):
         created_at (datetime.datetime):
-        role (Union[Unset, AIMessagePublicRole]):  Default: AIMessagePublicRole.AI.
+        type (Union[Unset, AIMessagePublicType]):  Default: AIMessagePublicType.AI.
     """
 
     id: UUID
     content: str
     created_at: datetime.datetime
-    role: Union[Unset, AIMessagePublicRole] = AIMessagePublicRole.AI
+    type: Union[Unset, AIMessagePublicType] = AIMessagePublicType.AI
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -35,9 +35,9 @@ class AIMessagePublic:
 
         created_at = self.created_at.isoformat()
 
-        role: Union[Unset, str] = UNSET
-        if not isinstance(self.role, Unset):
-            role = self.role.value
+        type: Union[Unset, str] = UNSET
+        if not isinstance(self.type, Unset):
+            type = self.type.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -48,8 +48,8 @@ class AIMessagePublic:
                 "created_at": created_at,
             }
         )
-        if role is not UNSET:
-            field_dict["role"] = role
+        if type is not UNSET:
+            field_dict["type"] = type
 
         return field_dict
 
@@ -62,18 +62,18 @@ class AIMessagePublic:
 
         created_at = isoparse(d.pop("created_at"))
 
-        _role = d.pop("role", UNSET)
-        role: Union[Unset, AIMessagePublicRole]
-        if isinstance(_role, Unset):
-            role = UNSET
+        _type = d.pop("type", UNSET)
+        type: Union[Unset, AIMessagePublicType]
+        if isinstance(_type, Unset):
+            type = UNSET
         else:
-            role = AIMessagePublicRole(_role)
+            type = AIMessagePublicType(_type)
 
         ai_message_public = cls(
             id=id,
             content=content,
             created_at=created_at,
-            role=role,
+            type=type,
         )
 
         ai_message_public.additional_properties = d

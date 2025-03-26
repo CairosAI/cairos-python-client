@@ -16,14 +16,16 @@ class ExportJob:
         thread_id (str):
         trigger_msg (UUID):
         avatar_id (UUID):
-        avatar_user_id (int):
+        avatar_user_id (str):
+        user_id (str):
         created_at (datetime.datetime):
     """
 
     thread_id: str
     trigger_msg: UUID
     avatar_id: UUID
-    avatar_user_id: int
+    avatar_user_id: str
+    user_id: str
     created_at: datetime.datetime
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -36,6 +38,8 @@ class ExportJob:
 
         avatar_user_id = self.avatar_user_id
 
+        user_id = self.user_id
+
         created_at = self.created_at.isoformat()
 
         field_dict: Dict[str, Any] = {}
@@ -46,6 +50,7 @@ class ExportJob:
                 "trigger_msg": trigger_msg,
                 "avatar_id": avatar_id,
                 "avatar_user_id": avatar_user_id,
+                "user_id": user_id,
                 "created_at": created_at,
             }
         )
@@ -63,6 +68,8 @@ class ExportJob:
 
         avatar_user_id = d.pop("avatar_user_id")
 
+        user_id = d.pop("user_id")
+
         created_at = isoparse(d.pop("created_at"))
 
         export_job = cls(
@@ -70,6 +77,7 @@ class ExportJob:
             trigger_msg=trigger_msg,
             avatar_id=avatar_id,
             avatar_user_id=avatar_user_id,
+            user_id=user_id,
             created_at=created_at,
         )
 

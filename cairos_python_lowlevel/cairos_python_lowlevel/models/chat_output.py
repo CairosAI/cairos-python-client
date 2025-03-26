@@ -1,9 +1,8 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, cast
+from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ChatOutput")
 
@@ -12,41 +11,48 @@ T = TypeVar("T", bound="ChatOutput")
 class ChatOutput:
     """
     Attributes:
+        trigger_msg (UUID):
+        messages (List[Any]):
         btl_objs (str):
-        output (Union[Unset, Any]):
     """
 
+    trigger_msg: UUID
+    messages: List[Any]
     btl_objs: str
-    output: Union[Unset, Any] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        btl_objs = self.btl_objs
+        trigger_msg = str(self.trigger_msg)
 
-        output = self.output
+        messages = self.messages
+
+        btl_objs = self.btl_objs
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "trigger_msg": trigger_msg,
+                "messages": messages,
                 "btl_objs": btl_objs,
             }
         )
-        if output is not UNSET:
-            field_dict["output"] = output
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        trigger_msg = UUID(d.pop("trigger_msg"))
+
+        messages = cast(List[Any], d.pop("messages"))
+
         btl_objs = d.pop("btl_objs")
 
-        output = d.pop("output", UNSET)
-
         chat_output = cls(
+            trigger_msg=trigger_msg,
+            messages=messages,
             btl_objs=btl_objs,
-            output=output,
         )
 
         chat_output.additional_properties = d

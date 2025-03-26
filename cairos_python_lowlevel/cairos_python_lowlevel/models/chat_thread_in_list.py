@@ -15,12 +15,12 @@ class ChatThreadInList:
 
     Attributes:
         id (str):
-        user_id (int):
+        user_id (str):
         created_at (datetime.datetime):
     """
 
     id: str
-    user_id: int
+    user_id: str
     created_at: datetime.datetime
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
