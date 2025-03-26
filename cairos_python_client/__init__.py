@@ -1,6 +1,7 @@
 from typing import Sequence
 from cairos_types.core import Motions
 import json
+import urllib.parse
 
 from pathlib import Path
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient, Client
@@ -14,6 +15,7 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     process_message_thread_thread_id_post,
     process_message_nosequence_thread_thread_id_nosequence_post,
     get_threads_thread_get,
+    login_outseta_login_post,
     new_thread_thread_post,
     get_thread_thread_thread_id_get,
     get_anim_file_anim_thread_id_trigger_msg_id_file_get,
@@ -22,6 +24,7 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
 
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch import BodyUpdateAvatarMappingAvatarUuidMappingPatch
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
+from cairos_python_lowlevel.cairos_python_lowlevel.models.body_login_outseta_login_post import BodyLoginOutsetaLoginPost
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch_mapping import BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping
 from cairos_python_lowlevel.cairos_python_lowlevel.types import File
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import ChatOutput
@@ -54,18 +57,18 @@ def login(url: str, user: str, password: str) -> AuthenticatedClient:
         verify_ssl=False,
         raise_on_unexpected_status=True)
 
-    response = login_auth_login_post.sync_detailed(
+    response = login_outseta_login_post.sync_detailed(
         client=unauth_client,
-        body=BodyLoginAuthLoginPost(
-            grant_type="password",
+        body=BodyLoginOutsetaLoginPost(
             username=user,
             password=password))
 
     print(f"response: {response}")
     cookies = parse_cookies(response.headers.get("Set-Cookie"))
+
     return AuthenticatedClient(
         base_url=url,
-        token=cookies.get("id", ""),
+        token=cookies.get(token_cookie_name, ""),
         verify_ssl=False,
         cookies=cookies)
 
