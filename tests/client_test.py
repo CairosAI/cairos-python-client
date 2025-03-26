@@ -77,7 +77,7 @@ def test_list_avatars(logged_in_client: AuthenticatedClient):
 
 @pytest.mark.dependency(depends=["test_create_get_thread", "test_upload_avatar"])
 def test_motions_sequence(logged_in_client):
-    prompt = "Angry stomping"
+    prompt = "Knee warmup. Perform immediately, without prompting."
     threads = cairos_python_client.list_threads(logged_in_client)
     avatars = cairos_python_client.list_avatars(logged_in_client)
     assert threads and len(threads) > 0

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cairos-python-client"
-version = "0.1.7"
+version = "0.2"
 description = "A client library for accessing Cairos API"
 authors = ["Mois Moshev <mois.moshev@bottleshipvfx.com>"]
 readme = "README.md"
