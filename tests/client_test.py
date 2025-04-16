@@ -91,7 +91,7 @@ def test_motions_sequence(logged_in_client):
 
 @pytest.mark.dependency(depends=["test_upload_avatar"])
 def test_delete_avatar(logged_in_client):
-    avatar = cairos_python_client.list_avatars(logged_in_client)[0]
+    avatar = cairos_python_client.list_avatars(logged_in_client)[-1]
     cairos_python_client.delete_avatar(
         avatar.id.hex,
         client=logged_in_client)

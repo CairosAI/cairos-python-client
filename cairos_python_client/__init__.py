@@ -49,7 +49,15 @@ def parse_cookies(cookies: str | None) -> dict[str, str]:
         cookies.split(",")))
 
 def motions_from_chat_output(chat_output: ChatOutput) -> Motions | None:
-    return Motions(**json.loads(chat_output.btl_objs).get('motions'))
+    artifact = next(
+        (msg["artifact"] for msg in
+         chat_output.messages
+         if "artifact" in msg),
+        None)
+    if artifact:
+        return Motions.parse_obj(artifact)
+    else:
+        return None
 
 def login(url: str, user: str, password: str) -> AuthenticatedClient:
     unauth_client = Client(
