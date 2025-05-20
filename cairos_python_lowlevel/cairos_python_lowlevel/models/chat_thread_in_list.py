@@ -1,9 +1,11 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ChatThreadInList")
 
@@ -17,11 +19,13 @@ class ChatThreadInList:
         id (str):
         user_id (str):
         created_at (datetime.datetime):
+        nice_name (Union[Unset, str]):
     """
 
     id: str
     user_id: str
     created_at: datetime.datetime
+    nice_name: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -30,6 +34,8 @@ class ChatThreadInList:
         user_id = self.user_id
 
         created_at = self.created_at.isoformat()
+
+        nice_name = self.nice_name
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -40,6 +46,8 @@ class ChatThreadInList:
                 "created_at": created_at,
             }
         )
+        if nice_name is not UNSET:
+            field_dict["nice_name"] = nice_name
 
         return field_dict
 
@@ -52,10 +60,13 @@ class ChatThreadInList:
 
         created_at = isoparse(d.pop("created_at"))
 
+        nice_name = d.pop("nice_name", UNSET)
+
         chat_thread_in_list = cls(
             id=id,
             user_id=user_id,
             created_at=created_at,
+            nice_name=nice_name,
         )
 
         chat_thread_in_list.additional_properties = d

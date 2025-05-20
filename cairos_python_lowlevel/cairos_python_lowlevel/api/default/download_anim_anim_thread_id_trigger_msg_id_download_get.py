@@ -20,8 +20,8 @@ def _get_kwargs(
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
-        "method": "post",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}/export",
+        "method": "get",
+        "url": f"/anim/{thread_id}/{trigger_msg_id}/download",
         "cookies": cookies,
     }
 
@@ -31,10 +31,10 @@ def _get_kwargs(
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    if response.status_code == 202:
-        response_202 = OrmAnimation.from_dict(response.json())
+    if response.status_code == 200:
+        response_200 = OrmAnimation.from_dict(response.json())
 
-        return response_202
+        return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -63,7 +63,7 @@ def sync_detailed(
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+    """Download Anim
 
     Args:
         thread_id (str):
@@ -98,7 +98,7 @@ def sync(
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+    """Download Anim
 
     Args:
         thread_id (str):
@@ -128,7 +128,7 @@ async def asyncio_detailed(
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+    """Download Anim
 
     Args:
         thread_id (str):
@@ -161,7 +161,7 @@ async def asyncio(
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+    """Download Anim
 
     Args:
         thread_id (str):

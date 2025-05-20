@@ -6,13 +6,10 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.orm_animation import OrmAnimation
 from ...types import Response
 
 
 def _get_kwargs(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
@@ -20,8 +17,8 @@ def _get_kwargs(
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
-        "method": "post",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}/export",
+        "method": "get",
+        "url": "/system/selected_scene",
         "cookies": cookies,
     }
 
@@ -30,11 +27,10 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    if response.status_code == 202:
-        response_202 = OrmAnimation.from_dict(response.json())
-
-        return response_202
+) -> Optional[Union[Any, HTTPValidationError]]:
+    if response.status_code == 200:
+        response_200 = response.json()
+        return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -47,7 +43,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -57,17 +53,13 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Selected Scene
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -75,12 +67,10 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, OrmAnimation]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -92,17 +82,13 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Selected Scene
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -110,29 +96,23 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, OrmAnimation]
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
         client=client,
         outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Selected Scene
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -140,12 +120,10 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, OrmAnimation]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -155,17 +133,13 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
-    """Export Anim
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Selected Scene
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -173,13 +147,11 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, OrmAnimation]
+        Union[Any, HTTPValidationError]
     """
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
-            trigger_msg_id=trigger_msg_id,
             client=client,
             outseta_nocode_access_token=outseta_nocode_access_token,
         )

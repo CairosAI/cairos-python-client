@@ -1,7 +1,9 @@
+import datetime
 from typing import Any, Dict, List, Type, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 T = TypeVar("T", bound="Motion")
 
@@ -13,11 +15,15 @@ class Motion:
         sg_id (int):
         description (str):
         input_ (str):
+        created_at (datetime.datetime):
+        shot_description (str):
     """
 
     sg_id: int
     description: str
     input_: str
+    created_at: datetime.datetime
+    shot_description: str
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -27,6 +33,10 @@ class Motion:
 
         input_ = self.input_
 
+        created_at = self.created_at.isoformat()
+
+        shot_description = self.shot_description
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -34,6 +44,8 @@ class Motion:
                 "sg_id": sg_id,
                 "description": description,
                 "input": input_,
+                "created_at": created_at,
+                "shot_description": shot_description,
             }
         )
 
@@ -48,10 +60,16 @@ class Motion:
 
         input_ = d.pop("input")
 
+        created_at = isoparse(d.pop("created_at"))
+
+        shot_description = d.pop("shot_description")
+
         motion = cls(
             sg_id=sg_id,
             description=description,
             input_=input_,
+            created_at=created_at,
+            shot_description=shot_description,
         )
 
         motion.additional_properties = d

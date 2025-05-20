@@ -1,10 +1,12 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="OrmAnimation")
 
@@ -21,6 +23,7 @@ class OrmAnimation:
         created_at (datetime.datetime):
         filepath_gltf (str):
         filepath_bgeo (str):
+        nice_name (Union[Unset, str]):
     """
 
     job_thread: str
@@ -31,6 +34,7 @@ class OrmAnimation:
     created_at: datetime.datetime
     filepath_gltf: str
     filepath_bgeo: str
+    nice_name: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -50,6 +54,8 @@ class OrmAnimation:
 
         filepath_bgeo = self.filepath_bgeo
 
+        nice_name = self.nice_name
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -64,6 +70,8 @@ class OrmAnimation:
                 "filepath_bgeo": filepath_bgeo,
             }
         )
+        if nice_name is not UNSET:
+            field_dict["nice_name"] = nice_name
 
         return field_dict
 
@@ -86,6 +94,8 @@ class OrmAnimation:
 
         filepath_bgeo = d.pop("filepath_bgeo")
 
+        nice_name = d.pop("nice_name", UNSET)
+
         orm_animation = cls(
             job_thread=job_thread,
             job_trigger=job_trigger,
@@ -95,6 +105,7 @@ class OrmAnimation:
             created_at=created_at,
             filepath_gltf=filepath_gltf,
             filepath_bgeo=filepath_bgeo,
+            nice_name=nice_name,
         )
 
         orm_animation.additional_properties = d
