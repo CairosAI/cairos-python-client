@@ -32,7 +32,6 @@ from .invalid_tool_call import InvalidToolCall
 from .invalid_tool_call_type import InvalidToolCallType
 from .motion import Motion
 from .orm_animation import OrmAnimation
-from .orm_motion import OrmMotion
 from .outseta_person import OutsetaPerson
 from .outseta_person_account import OutsetaPersonAccount
 from .outseta_registration_record import OutsetaRegistrationRecord
@@ -87,7 +86,6 @@ __all__ = (
     "InvalidToolCallType",
     "Motion",
     "OrmAnimation",
-    "OrmMotion",
     "OutsetaPerson",
     "OutsetaPersonAccount",
     "OutsetaRegistrationRecord",
