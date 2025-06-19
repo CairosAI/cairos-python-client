@@ -8,7 +8,6 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.ai_message import AIMessage
     from ..models.animation import Animation
-    from ..models.avatar_metadata import AvatarMetadata
     from ..models.human_message import HumanMessage
     from ..models.system_message import SystemMessage
     from ..models.tool_message import ToolMessage
@@ -44,14 +43,12 @@ class ChatInput:
                     model = ...
                     print(model.invoke(messages))
         history (List[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
-        avatar (AvatarMetadata):
         btl_objs (List[Any]):
         animation (Union[Unset, List['Animation']]):
     """
 
     prompt: "HumanMessage"
     history: List[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
-    avatar: "AvatarMetadata"
     btl_objs: List[Any]
     animation: Union[Unset, List["Animation"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -77,8 +74,6 @@ class ChatInput:
 
             history.append(history_item)
 
-        avatar = self.avatar.to_dict()
-
         btl_objs = self.btl_objs
 
         animation: Union[Unset, List[Dict[str, Any]]] = UNSET
@@ -94,7 +89,6 @@ class ChatInput:
             {
                 "prompt": prompt,
                 "history": history,
-                "avatar": avatar,
                 "btl_objs": btl_objs,
             }
         )
@@ -107,7 +101,6 @@ class ChatInput:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         from ..models.ai_message import AIMessage
         from ..models.animation import Animation
-        from ..models.avatar_metadata import AvatarMetadata
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
         from ..models.tool_message import ToolMessage
@@ -154,8 +147,6 @@ class ChatInput:
 
             history.append(history_item)
 
-        avatar = AvatarMetadata.from_dict(d.pop("avatar"))
-
         btl_objs = cast(List[Any], d.pop("btl_objs"))
 
         animation = []
@@ -168,7 +159,6 @@ class ChatInput:
         chat_input = cls(
             prompt=prompt,
             history=history,
-            avatar=avatar,
             btl_objs=btl_objs,
             animation=animation,
         )

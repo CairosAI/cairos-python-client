@@ -19,8 +19,7 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     new_thread_thread_post,
     get_thread_thread_thread_id_get,
     get_anim_file_anim_thread_id_trigger_msg_id_file_get,
-    delete_avatar_route_avatar_uuid_delete,
-    get_anim_anim_thread_id_trigger_msg_id_get)
+    delete_avatar_route_avatar_uuid_delete)
 
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch import BodyUpdateAvatarMappingAvatarUuidMappingPatch
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
@@ -31,7 +30,6 @@ from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import Cha
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_input import ChatInput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.http_validation_error import HTTPValidationError
 from cairos_python_lowlevel.cairos_python_lowlevel.models.human_message import HumanMessage
-from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_metadata import AvatarMetadata
 from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_public import AvatarPublic
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_public import ChatThreadPublic
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_in_list import ChatThreadInList
@@ -80,7 +78,7 @@ def login(url: str, user: str, password: str) -> AuthenticatedClient:
         verify_ssl=False,
         cookies=cookies)
 
-def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
+def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
     """ Send a prompt to AI, receive structured output, containing animations, etc.
     """
     response = process_message_thread_thread_id_post.sync(
@@ -89,7 +87,6 @@ def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: Authe
         body=ChatInput(
             prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
-            avatar=avatar,
             btl_objs=[]),
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
     if isinstance(response, ChatOutput):
@@ -97,7 +94,7 @@ def send_chat(prompt: str, thread_id: str, avatar: AvatarMetadata, client: Authe
     else:
         raise Exception(str(response))
 
-def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata, client: AuthenticatedClient) -> ChatOutput:
+def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatOutput:
     """ Similar to send_chat, but does not trigger a sequencing job.
     Useful for when you only want to retrieve the list of motions.
     """
@@ -107,7 +104,6 @@ def request_motions_sequence(prompt: str, thread_id: str, avatar: AvatarMetadata
         body=ChatInput(
             prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
-            avatar=avatar,
             btl_objs=[]),
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
     if isinstance(response, ChatOutput):
@@ -130,7 +126,8 @@ def create_thread(client: AuthenticatedClient) -> ChatThreadPublic:
 def get_thread_by_id(thread_id: str, client: AuthenticatedClient) -> ChatThreadPublic | HTTPValidationError | None:
     return get_thread_thread_thread_id_get.sync(
         thread_id=thread_id,
-        client=client)
+        client=client,
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
 
 def create_avatar(label: str, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     return create_blank_avatar_avatar_new_label_post.sync(
@@ -207,4 +204,5 @@ def get_animation(thread_id: str, trigger_msg_id: str, client: AuthenticatedClie
     return get_anim_file_anim_thread_id_trigger_msg_id_file_get.sync_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
-        client=client).content
+        client=client,
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, "")).content

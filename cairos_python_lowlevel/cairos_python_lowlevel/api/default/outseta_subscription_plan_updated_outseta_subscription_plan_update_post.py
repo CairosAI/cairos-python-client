@@ -5,34 +5,36 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.chat_thread_public import ChatThreadPublic
 from ...models.http_validation_error import HTTPValidationError
+from ...models.outseta_subscription_plan_update_record import OutsetaSubscriptionPlanUpdateRecord
 from ...types import Response
 
 
 def _get_kwargs(
-    thread_id: str,
     *,
-    outseta_nocode_access_token: str,
+    body: OutsetaSubscriptionPlanUpdateRecord,
 ) -> Dict[str, Any]:
-    cookies = {}
-    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+    headers: Dict[str, Any] = {}
 
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": f"/thread/{thread_id}",
-        "cookies": cookies,
+        "method": "post",
+        "url": "/outseta/subscription_plan_update",
     }
 
+    _body = body.to_dict()
+
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == 200:
-        response_200 = ChatThreadPublic.from_dict(response.json())
-
+        response_200 = response.json()
         return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -46,7 +48,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -56,28 +58,25 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    outseta_nocode_access_token: str,
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+    body: OutsetaSubscriptionPlanUpdateRecord,
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Outseta Subscription Plan Updated
 
     Args:
-        thread_id (str):
-        outseta_nocode_access_token (str):
+        body (OutsetaSubscriptionPlanUpdateRecord):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatThreadPublic, HTTPValidationError]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        outseta_nocode_access_token=outseta_nocode_access_token,
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -88,55 +87,49 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    outseta_nocode_access_token: str,
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+    body: OutsetaSubscriptionPlanUpdateRecord,
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Outseta Subscription Plan Updated
 
     Args:
-        thread_id (str):
-        outseta_nocode_access_token (str):
+        body (OutsetaSubscriptionPlanUpdateRecord):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatThreadPublic, HTTPValidationError]
+        Union[Any, HTTPValidationError]
     """
 
     return sync_detailed(
-        thread_id=thread_id,
         client=client,
-        outseta_nocode_access_token=outseta_nocode_access_token,
+        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    outseta_nocode_access_token: str,
-) -> Response[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+    body: OutsetaSubscriptionPlanUpdateRecord,
+) -> Response[Union[Any, HTTPValidationError]]:
+    """Outseta Subscription Plan Updated
 
     Args:
-        thread_id (str):
-        outseta_nocode_access_token (str):
+        body (OutsetaSubscriptionPlanUpdateRecord):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatThreadPublic, HTTPValidationError]]
+        Response[Union[Any, HTTPValidationError]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        outseta_nocode_access_token=outseta_nocode_access_token,
+        body=body,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -145,29 +138,26 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    outseta_nocode_access_token: str,
-) -> Optional[Union[ChatThreadPublic, HTTPValidationError]]:
-    """Get Thread
+    body: OutsetaSubscriptionPlanUpdateRecord,
+) -> Optional[Union[Any, HTTPValidationError]]:
+    """Outseta Subscription Plan Updated
 
     Args:
-        thread_id (str):
-        outseta_nocode_access_token (str):
+        body (OutsetaSubscriptionPlanUpdateRecord):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatThreadPublic, HTTPValidationError]
+        Union[Any, HTTPValidationError]
     """
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
             client=client,
-            outseta_nocode_access_token=outseta_nocode_access_token,
+            body=body,
         )
     ).parsed

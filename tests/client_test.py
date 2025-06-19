@@ -5,7 +5,6 @@ from pathlib import Path
 import cairos_python_client
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient
 from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_public import AvatarPublic
-from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_metadata import AvatarMetadata
 
 @pytest.fixture
 def user_data():
@@ -79,12 +78,10 @@ def test_list_avatars(logged_in_client: AuthenticatedClient):
 def test_motions_sequence(logged_in_client):
     prompt = "Knee warmup. Perform immediately, without prompting."
     threads = cairos_python_client.list_threads(logged_in_client)
-    avatars = cairos_python_client.list_avatars(logged_in_client)
     assert threads and len(threads) > 0
     sequence = cairos_python_client.request_motions_sequence(
         prompt=prompt,
         thread_id=threads[0].id,
-        avatar=AvatarMetadata.from_dict(avatars[0].to_dict()),
         client=logged_in_client)
 
     assert sequence

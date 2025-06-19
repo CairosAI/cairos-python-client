@@ -12,10 +12,16 @@ from ...types import Response
 def _get_kwargs(
     thread_id: str,
     trigger_msg_id: str,
+    *,
+    outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
+    cookies = {}
+    cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
     _kwargs: Dict[str, Any] = {
         "method": "get",
         "url": f"/anim/{thread_id}/{trigger_msg_id}/file",
+        "cookies": cookies,
     }
 
     return _kwargs
@@ -53,12 +59,14 @@ def sync_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Get Anim File
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -71,6 +79,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -85,12 +94,14 @@ def sync(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Get Anim File
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -104,6 +115,7 @@ def sync(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         client=client,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
@@ -112,12 +124,14 @@ async def asyncio_detailed(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Get Anim File
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -130,6 +144,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -142,12 +157,14 @@ async def asyncio(
     trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Get Anim File
 
     Args:
         thread_id (str):
         trigger_msg_id (str):
+        outseta_nocode_access_token (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -162,5 +179,6 @@ async def asyncio(
             thread_id=thread_id,
             trigger_msg_id=trigger_msg_id,
             client=client,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

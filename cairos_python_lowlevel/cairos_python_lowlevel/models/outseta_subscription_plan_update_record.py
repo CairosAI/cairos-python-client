@@ -8,18 +8,20 @@ if TYPE_CHECKING:
     from ..models.outseta_subscription_record import OutsetaSubscriptionRecord
 
 
-T = TypeVar("T", bound="OutsetaRegistrationRecord")
+T = TypeVar("T", bound="OutsetaSubscriptionPlanUpdateRecord")
 
 
 @_attrs_define
-class OutsetaRegistrationRecord:
+class OutsetaSubscriptionPlanUpdateRecord:
     """
     Attributes:
         person_account (List['OutsetaPersonAccount']):
+        subscriptions (List['OutsetaSubscriptionRecord']):
         current_subscription (OutsetaSubscriptionRecord):
     """
 
     person_account: List["OutsetaPersonAccount"]
+    subscriptions: List["OutsetaSubscriptionRecord"]
     current_subscription: "OutsetaSubscriptionRecord"
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -29,6 +31,11 @@ class OutsetaRegistrationRecord:
             person_account_item = person_account_item_data.to_dict()
             person_account.append(person_account_item)
 
+        subscriptions = []
+        for subscriptions_item_data in self.subscriptions:
+            subscriptions_item = subscriptions_item_data.to_dict()
+            subscriptions.append(subscriptions_item)
+
         current_subscription = self.current_subscription.to_dict()
 
         field_dict: Dict[str, Any] = {}
@@ -36,6 +43,7 @@ class OutsetaRegistrationRecord:
         field_dict.update(
             {
                 "PersonAccount": person_account,
+                "Subscriptions": subscriptions,
                 "CurrentSubscription": current_subscription,
             }
         )
@@ -55,15 +63,23 @@ class OutsetaRegistrationRecord:
 
             person_account.append(person_account_item)
 
+        subscriptions = []
+        _subscriptions = d.pop("Subscriptions")
+        for subscriptions_item_data in _subscriptions:
+            subscriptions_item = OutsetaSubscriptionRecord.from_dict(subscriptions_item_data)
+
+            subscriptions.append(subscriptions_item)
+
         current_subscription = OutsetaSubscriptionRecord.from_dict(d.pop("CurrentSubscription"))
 
-        outseta_registration_record = cls(
+        outseta_subscription_plan_update_record = cls(
             person_account=person_account,
+            subscriptions=subscriptions,
             current_subscription=current_subscription,
         )
 
-        outseta_registration_record.additional_properties = d
-        return outseta_registration_record
+        outseta_subscription_plan_update_record.additional_properties = d
+        return outseta_subscription_plan_update_record
 
     @property
     def additional_keys(self) -> List[str]:

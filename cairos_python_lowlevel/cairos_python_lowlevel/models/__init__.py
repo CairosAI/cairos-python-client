@@ -6,7 +6,6 @@ from .ai_message_content_type_1_item_type_1 import AIMessageContentType1ItemType
 from .ai_message_response_metadata import AIMessageResponseMetadata
 from .ai_message_type import AIMessageType
 from .animation import Animation
-from .avatar_metadata import AvatarMetadata
 from .avatar_public import AvatarPublic
 from .body_login_outseta_login_post import BodyLoginOutsetaLoginPost
 from .body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
@@ -32,9 +31,13 @@ from .invalid_tool_call import InvalidToolCall
 from .invalid_tool_call_type import InvalidToolCallType
 from .motion import Motion
 from .orm_animation import OrmAnimation
+from .orm_motion import OrmMotion
 from .outseta_person import OutsetaPerson
 from .outseta_person_account import OutsetaPersonAccount
+from .outseta_plan_record import OutsetaPlanRecord
 from .outseta_registration_record import OutsetaRegistrationRecord
+from .outseta_subscription_plan_update_record import OutsetaSubscriptionPlanUpdateRecord
+from .outseta_subscription_record import OutsetaSubscriptionRecord
 from .sequence_job import SequenceJob
 from .stored_message import StoredMessage
 from .stored_message_type import StoredMessageType
@@ -62,7 +65,6 @@ __all__ = (
     "AIMessageResponseMetadata",
     "AIMessageType",
     "Animation",
-    "AvatarMetadata",
     "AvatarPublic",
     "BodyLoginOutsetaLoginPost",
     "BodyPostAvatarAvatarUuidUploadPost",
@@ -86,9 +88,13 @@ __all__ = (
     "InvalidToolCallType",
     "Motion",
     "OrmAnimation",
+    "OrmMotion",
     "OutsetaPerson",
     "OutsetaPersonAccount",
+    "OutsetaPlanRecord",
     "OutsetaRegistrationRecord",
+    "OutsetaSubscriptionPlanUpdateRecord",
+    "OutsetaSubscriptionRecord",
     "SequenceJob",
     "StoredMessage",
     "StoredMessageType",

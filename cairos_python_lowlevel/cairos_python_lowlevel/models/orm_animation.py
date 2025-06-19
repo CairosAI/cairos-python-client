@@ -17,23 +17,23 @@ class OrmAnimation:
     Attributes:
         job_thread (str):
         job_trigger (UUID):
-        avatar_id (UUID):
-        avatar_user_id (str):
         user_id (str):
         created_at (datetime.datetime):
         filepath_gltf (str):
         filepath_bgeo (str):
+        avatar_id (Union[Unset, UUID]):
+        avatar_user_id (Union[Unset, str]):
         nice_name (Union[Unset, str]):
     """
 
     job_thread: str
     job_trigger: UUID
-    avatar_id: UUID
-    avatar_user_id: str
     user_id: str
     created_at: datetime.datetime
     filepath_gltf: str
     filepath_bgeo: str
+    avatar_id: Union[Unset, UUID] = UNSET
+    avatar_user_id: Union[Unset, str] = UNSET
     nice_name: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -41,10 +41,6 @@ class OrmAnimation:
         job_thread = self.job_thread
 
         job_trigger = str(self.job_trigger)
-
-        avatar_id = str(self.avatar_id)
-
-        avatar_user_id = self.avatar_user_id
 
         user_id = self.user_id
 
@@ -54,6 +50,12 @@ class OrmAnimation:
 
         filepath_bgeo = self.filepath_bgeo
 
+        avatar_id: Union[Unset, str] = UNSET
+        if not isinstance(self.avatar_id, Unset):
+            avatar_id = str(self.avatar_id)
+
+        avatar_user_id = self.avatar_user_id
+
         nice_name = self.nice_name
 
         field_dict: Dict[str, Any] = {}
@@ -62,14 +64,16 @@ class OrmAnimation:
             {
                 "job_thread": job_thread,
                 "job_trigger": job_trigger,
-                "avatar_id": avatar_id,
-                "avatar_user_id": avatar_user_id,
                 "user_id": user_id,
                 "created_at": created_at,
                 "filepath_gltf": filepath_gltf,
                 "filepath_bgeo": filepath_bgeo,
             }
         )
+        if avatar_id is not UNSET:
+            field_dict["avatar_id"] = avatar_id
+        if avatar_user_id is not UNSET:
+            field_dict["avatar_user_id"] = avatar_user_id
         if nice_name is not UNSET:
             field_dict["nice_name"] = nice_name
 
@@ -82,10 +86,6 @@ class OrmAnimation:
 
         job_trigger = UUID(d.pop("job_trigger"))
 
-        avatar_id = UUID(d.pop("avatar_id"))
-
-        avatar_user_id = d.pop("avatar_user_id")
-
         user_id = d.pop("user_id")
 
         created_at = isoparse(d.pop("created_at"))
@@ -94,17 +94,26 @@ class OrmAnimation:
 
         filepath_bgeo = d.pop("filepath_bgeo")
 
+        _avatar_id = d.pop("avatar_id", UNSET)
+        avatar_id: Union[Unset, UUID]
+        if isinstance(_avatar_id, Unset):
+            avatar_id = UNSET
+        else:
+            avatar_id = UUID(_avatar_id)
+
+        avatar_user_id = d.pop("avatar_user_id", UNSET)
+
         nice_name = d.pop("nice_name", UNSET)
 
         orm_animation = cls(
             job_thread=job_thread,
             job_trigger=job_trigger,
-            avatar_id=avatar_id,
-            avatar_user_id=avatar_user_id,
             user_id=user_id,
             created_at=created_at,
             filepath_gltf=filepath_gltf,
             filepath_bgeo=filepath_bgeo,
+            avatar_id=avatar_id,
+            avatar_user_id=avatar_user_id,
             nice_name=nice_name,
         )
 

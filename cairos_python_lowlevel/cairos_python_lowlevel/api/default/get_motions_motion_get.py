@@ -1,16 +1,16 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
+from ...models.orm_motion import OrmMotion
 from ...types import Response
 
 
 def _get_kwargs(
-    motion_id: int,
     *,
     outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
@@ -19,7 +19,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": f"/motion/{motion_id}/file",
+        "url": "/motion",
         "cookies": cookies,
     }
 
@@ -28,9 +28,15 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, HTTPValidationError]]:
+) -> Optional[Union[HTTPValidationError, List["OrmMotion"]]]:
     if response.status_code == 200:
-        response_200 = response.json()
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in _response_200:
+            response_200_item = OrmMotion.from_dict(response_200_item_data)
+
+            response_200.append(response_200_item)
+
         return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -44,7 +50,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, HTTPValidationError]]:
+) -> Response[Union[HTTPValidationError, List["OrmMotion"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -54,15 +60,15 @@ def _build_response(
 
 
 def sync_detailed(
-    motion_id: int,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[Any, HTTPValidationError]]:
-    """Get Motion File
+) -> Response[Union[HTTPValidationError, List["OrmMotion"]]]:
+    """Get Motions
+
+     Request a list of motions.
 
     Args:
-        motion_id (int):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -70,11 +76,10 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, List['OrmMotion']]]
     """
 
     kwargs = _get_kwargs(
-        motion_id=motion_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -86,15 +91,15 @@ def sync_detailed(
 
 
 def sync(
-    motion_id: int,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[Any, HTTPValidationError]]:
-    """Get Motion File
+) -> Optional[Union[HTTPValidationError, List["OrmMotion"]]]:
+    """Get Motions
+
+     Request a list of motions.
 
     Args:
-        motion_id (int):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -102,26 +107,25 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Union[HTTPValidationError, List['OrmMotion']]
     """
 
     return sync_detailed(
-        motion_id=motion_id,
         client=client,
         outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
-    motion_id: int,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[Any, HTTPValidationError]]:
-    """Get Motion File
+) -> Response[Union[HTTPValidationError, List["OrmMotion"]]]:
+    """Get Motions
+
+     Request a list of motions.
 
     Args:
-        motion_id (int):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -129,11 +133,10 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, List['OrmMotion']]]
     """
 
     kwargs = _get_kwargs(
-        motion_id=motion_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -143,15 +146,15 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    motion_id: int,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[Any, HTTPValidationError]]:
-    """Get Motion File
+) -> Optional[Union[HTTPValidationError, List["OrmMotion"]]]:
+    """Get Motions
+
+     Request a list of motions.
 
     Args:
-        motion_id (int):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -159,12 +162,11 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Union[HTTPValidationError, List['OrmMotion']]
     """
 
     return (
         await asyncio_detailed(
-            motion_id=motion_id,
             client=client,
             outseta_nocode_access_token=outseta_nocode_access_token,
         )
