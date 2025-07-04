@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from typing import Any, Dict, Optional, Union
+from uuid import UUID
 
 import httpx
 
@@ -10,8 +11,7 @@ from ...types import Response
 
 
 def _get_kwargs(
-    thread_id: str,
-    trigger_msg_id: str,
+    motd_id: UUID,
     *,
     outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
@@ -19,8 +19,8 @@ def _get_kwargs(
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}/download",
+        "method": "delete",
+        "url": f"/motd/{motd_id}",
         "cookies": cookies,
     }
 
@@ -55,17 +55,15 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
+    motd_id: UUID,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Download Anim
+    """Delete Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
+        motd_id (UUID):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -77,8 +75,7 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
+        motd_id=motd_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -90,17 +87,15 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
-    trigger_msg_id: str,
+    motd_id: UUID,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Download Anim
+    """Delete Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
+        motd_id (UUID):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -112,25 +107,22 @@ def sync(
     """
 
     return sync_detailed(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
+        motd_id=motd_id,
         client=client,
         outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
+    motd_id: UUID,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Download Anim
+    """Delete Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
+        motd_id (UUID):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -142,8 +134,7 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
+        motd_id=motd_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -153,17 +144,15 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
-    trigger_msg_id: str,
+    motd_id: UUID,
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Download Anim
+    """Delete Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
+        motd_id (UUID):
         outseta_nocode_access_token (str):
 
     Raises:
@@ -176,8 +165,7 @@ async def asyncio(
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
-            trigger_msg_id=trigger_msg_id,
+            motd_id=motd_id,
             client=client,
             outseta_nocode_access_token=outseta_nocode_access_token,
         )

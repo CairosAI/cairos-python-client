@@ -7,6 +7,7 @@ from .ai_message_response_metadata import AIMessageResponseMetadata
 from .ai_message_type import AIMessageType
 from .animation import Animation
 from .avatar_public import AvatarPublic
+from .body_create_motd_motd_post import BodyCreateMotdMotdPost
 from .body_login_outseta_login_post import BodyLoginOutsetaLoginPost
 from .body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
 from .body_select_scene_system_select_scene_post import BodySelectSceneSystemSelectScenePost
@@ -29,6 +30,7 @@ from .human_message_response_metadata import HumanMessageResponseMetadata
 from .human_message_type import HumanMessageType
 from .invalid_tool_call import InvalidToolCall
 from .invalid_tool_call_type import InvalidToolCallType
+from .motd import Motd
 from .motion import Motion
 from .orm_animation import OrmAnimation
 from .orm_motion import OrmMotion
@@ -66,6 +68,7 @@ __all__ = (
     "AIMessageType",
     "Animation",
     "AvatarPublic",
+    "BodyCreateMotdMotdPost",
     "BodyLoginOutsetaLoginPost",
     "BodyPostAvatarAvatarUuidUploadPost",
     "BodySelectSceneSystemSelectScenePost",
@@ -86,6 +89,7 @@ __all__ = (
     "HumanMessageType",
     "InvalidToolCall",
     "InvalidToolCallType",
+    "Motd",
     "Motion",
     "OrmAnimation",
     "OrmMotion",

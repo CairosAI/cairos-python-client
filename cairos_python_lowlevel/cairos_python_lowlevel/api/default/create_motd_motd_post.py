@@ -5,34 +5,44 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.body_create_motd_motd_post import BodyCreateMotdMotdPost
 from ...models.http_validation_error import HTTPValidationError
+from ...models.motd import Motd
 from ...types import Response
 
 
 def _get_kwargs(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
+    body: BodyCreateMotdMotdPost,
     outseta_nocode_access_token: str,
 ) -> Dict[str, Any]:
+    headers: Dict[str, Any] = {}
+
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": f"/anim/{thread_id}/{trigger_msg_id}/download",
+        "method": "post",
+        "url": "/motd",
         "cookies": cookies,
     }
 
+    _body = body.to_dict()
+
+    _kwargs["json"] = _body
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, HTTPValidationError]]:
-    if response.status_code == 200:
-        response_200 = response.json()
-        return response_200
+) -> Optional[Union[HTTPValidationError, Motd]]:
+    if response.status_code == 202:
+        response_202 = Motd.from_dict(response.json())
+
+        return response_202
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -45,7 +55,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, HTTPValidationError]]:
+) -> Response[Union[HTTPValidationError, Motd]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -55,30 +65,27 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyCreateMotdMotdPost,
     outseta_nocode_access_token: str,
-) -> Response[Union[Any, HTTPValidationError]]:
-    """Download Anim
+) -> Response[Union[HTTPValidationError, Motd]]:
+    """Create Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        body (BodyCreateMotdMotdPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, Motd]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
+        body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -90,60 +97,54 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyCreateMotdMotdPost,
     outseta_nocode_access_token: str,
-) -> Optional[Union[Any, HTTPValidationError]]:
-    """Download Anim
+) -> Optional[Union[HTTPValidationError, Motd]]:
+    """Create Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        body (BodyCreateMotdMotdPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Union[HTTPValidationError, Motd]
     """
 
     return sync_detailed(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
         client=client,
+        body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyCreateMotdMotdPost,
     outseta_nocode_access_token: str,
-) -> Response[Union[Any, HTTPValidationError]]:
-    """Download Anim
+) -> Response[Union[HTTPValidationError, Motd]]:
+    """Create Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        body (BodyCreateMotdMotdPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Union[HTTPValidationError, Motd]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        trigger_msg_id=trigger_msg_id,
+        body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
@@ -153,32 +154,29 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
-    trigger_msg_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
+    body: BodyCreateMotdMotdPost,
     outseta_nocode_access_token: str,
-) -> Optional[Union[Any, HTTPValidationError]]:
-    """Download Anim
+) -> Optional[Union[HTTPValidationError, Motd]]:
+    """Create Motd
 
     Args:
-        thread_id (str):
-        trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        body (BodyCreateMotdMotdPost):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, HTTPValidationError]
+        Union[HTTPValidationError, Motd]
     """
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
-            trigger_msg_id=trigger_msg_id,
             client=client,
+            body=body,
             outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed
