@@ -1,8 +1,11 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..models.avatar_status import AvatarStatus
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AvatarPublic")
 
@@ -14,13 +17,13 @@ class AvatarPublic:
         id (UUID):
         user_id (str):
         label (str):
-        ingested (bool):
+        status (Union[Unset, List[AvatarStatus]]):
     """
 
     id: UUID
     user_id: str
     label: str
-    ingested: bool
+    status: Union[Unset, List[AvatarStatus]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -30,7 +33,12 @@ class AvatarPublic:
 
         label = self.label
 
-        ingested = self.ingested
+        status: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.status, Unset):
+            status = []
+            for status_item_data in self.status:
+                status_item = status_item_data.value
+                status.append(status_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -39,9 +47,10 @@ class AvatarPublic:
                 "id": id,
                 "user_id": user_id,
                 "label": label,
-                "ingested": ingested,
             }
         )
+        if status is not UNSET:
+            field_dict["status"] = status
 
         return field_dict
 
@@ -54,13 +63,18 @@ class AvatarPublic:
 
         label = d.pop("label")
 
-        ingested = d.pop("ingested")
+        status = []
+        _status = d.pop("status", UNSET)
+        for status_item_data in _status or []:
+            status_item = AvatarStatus(status_item_data)
+
+            status.append(status_item)
 
         avatar_public = cls(
             id=id,
             user_id=user_id,
             label=label,
-            ingested=ingested,
+            status=status,
         )
 
         avatar_public.additional_properties = d

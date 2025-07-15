@@ -7,6 +7,7 @@ from .ai_message_response_metadata import AIMessageResponseMetadata
 from .ai_message_type import AIMessageType
 from .animation import Animation
 from .avatar_public import AvatarPublic
+from .avatar_status import AvatarStatus
 from .body_create_motd_motd_post import BodyCreateMotdMotdPost
 from .body_login_outseta_login_post import BodyLoginOutsetaLoginPost
 from .body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
@@ -68,6 +69,7 @@ __all__ = (
     "AIMessageType",
     "Animation",
     "AvatarPublic",
+    "AvatarStatus",
     "BodyCreateMotdMotdPost",
     "BodyLoginOutsetaLoginPost",
     "BodyPostAvatarAvatarUuidUploadPost",
