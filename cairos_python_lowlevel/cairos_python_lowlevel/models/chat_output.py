@@ -1,8 +1,12 @@
-from typing import Any, Dict, List, Type, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+if TYPE_CHECKING:
+    from ..models.animation import Animation
+
 
 T = TypeVar("T", bound="ChatOutput")
 
@@ -14,11 +18,13 @@ class ChatOutput:
         trigger_msg (UUID):
         messages (List[Any]):
         btl_objs (str):
+        animation (Animation):
     """
 
     trigger_msg: UUID
     messages: List[Any]
     btl_objs: str
+    animation: "Animation"
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -28,6 +34,8 @@ class ChatOutput:
 
         btl_objs = self.btl_objs
 
+        animation = self.animation.to_dict()
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -35,6 +43,7 @@ class ChatOutput:
                 "trigger_msg": trigger_msg,
                 "messages": messages,
                 "btl_objs": btl_objs,
+                "animation": animation,
             }
         )
 
@@ -42,6 +51,8 @@ class ChatOutput:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.animation import Animation
+
         d = src_dict.copy()
         trigger_msg = UUID(d.pop("trigger_msg"))
 
@@ -49,10 +60,13 @@ class ChatOutput:
 
         btl_objs = d.pop("btl_objs")
 
+        animation = Animation.from_dict(d.pop("animation"))
+
         chat_output = cls(
             trigger_msg=trigger_msg,
             messages=messages,
             btl_objs=btl_objs,
+            animation=animation,
         )
 
         chat_output.additional_properties = d
