@@ -1,8 +1,10 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.animation import Animation
@@ -18,13 +20,13 @@ class ChatOutput:
         trigger_msg (UUID):
         messages (List[Any]):
         btl_objs (str):
-        animation (Animation):
+        animation (Union[Unset, Animation]):
     """
 
     trigger_msg: UUID
     messages: List[Any]
     btl_objs: str
-    animation: "Animation"
+    animation: Union[Unset, "Animation"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -34,7 +36,9 @@ class ChatOutput:
 
         btl_objs = self.btl_objs
 
-        animation = self.animation.to_dict()
+        animation: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.animation, Unset):
+            animation = self.animation.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -43,9 +47,10 @@ class ChatOutput:
                 "trigger_msg": trigger_msg,
                 "messages": messages,
                 "btl_objs": btl_objs,
-                "animation": animation,
             }
         )
+        if animation is not UNSET:
+            field_dict["animation"] = animation
 
         return field_dict
 
@@ -60,7 +65,12 @@ class ChatOutput:
 
         btl_objs = d.pop("btl_objs")
 
-        animation = Animation.from_dict(d.pop("animation"))
+        _animation = d.pop("animation", UNSET)
+        animation: Union[Unset, Animation]
+        if isinstance(_animation, Unset):
+            animation = UNSET
+        else:
+            animation = Animation.from_dict(_animation)
 
         chat_output = cls(
             trigger_msg=trigger_msg,
