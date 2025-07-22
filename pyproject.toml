@@ -24,7 +24,7 @@ priority = "primary"
 
 [[tool.poetry.source]]
 name = "gitea"
-url = "https://apollo.bottleship.local:8080/api/packages/Cairos/pypi/simple/"
+url = "https://apollo.bottleship.local:8080/api/packages/Cairos/pypi/"
 priority = "supplemental"
 
 [build-system]
