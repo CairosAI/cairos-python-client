@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -39,14 +40,14 @@ class ChatContext:
                     # Instantiate a chat model and invoke it with the messages
                     model = ...
                     print(model.invoke(messages))
-        history (List[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
+        history (list[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
     """
 
     prompt: "HumanMessage"
-    history: List[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    history: list[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.ai_message import AIMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
@@ -55,7 +56,7 @@ class ChatContext:
 
         history = []
         for history_item_data in self.history:
-            history_item: Dict[str, Any]
+            history_item: dict[str, Any]
             if isinstance(history_item_data, HumanMessage):
                 history_item = history_item_data.to_dict()
             elif isinstance(history_item_data, AIMessage):
@@ -67,7 +68,7 @@ class ChatContext:
 
             history.append(history_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -79,13 +80,13 @@ class ChatContext:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.ai_message import AIMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
         from ..models.tool_message import ToolMessage
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         prompt = HumanMessage.from_dict(d.pop("prompt"))
 
         history = []
@@ -136,7 +137,7 @@ class ChatContext:
         return chat_context
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

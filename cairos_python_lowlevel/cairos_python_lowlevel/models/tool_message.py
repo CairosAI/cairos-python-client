@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -58,36 +59,36 @@ class ToolMessage:
     to request multiple tool calls in parallel.
 
         Attributes:
-            content (Union[List[Union['ToolMessageContentType1ItemType1', str]], str]):
+            content (Union[list[Union['ToolMessageContentType1ItemType1', str]], str]):
             tool_call_id (str):
             additional_kwargs (Union[Unset, ToolMessageAdditionalKwargs]):
             response_metadata (Union[Unset, ToolMessageResponseMetadata]):
-            type (Union[Unset, ToolMessageType]):  Default: ToolMessageType.TOOL.
+            type_ (Union[Unset, ToolMessageType]):  Default: ToolMessageType.TOOL.
             name (Union[Unset, str]):
             id (Union[Unset, str]):
             artifact (Union[Unset, Any]):
             status (Union[Unset, ToolMessageStatus]):  Default: ToolMessageStatus.SUCCESS.
     """
 
-    content: Union[List[Union["ToolMessageContentType1ItemType1", str]], str]
+    content: Union[list[Union["ToolMessageContentType1ItemType1", str]], str]
     tool_call_id: str
     additional_kwargs: Union[Unset, "ToolMessageAdditionalKwargs"] = UNSET
     response_metadata: Union[Unset, "ToolMessageResponseMetadata"] = UNSET
-    type: Union[Unset, ToolMessageType] = ToolMessageType.TOOL
+    type_: Union[Unset, ToolMessageType] = ToolMessageType.TOOL
     name: Union[Unset, str] = UNSET
     id: Union[Unset, str] = UNSET
     artifact: Union[Unset, Any] = UNSET
     status: Union[Unset, ToolMessageStatus] = ToolMessageStatus.SUCCESS
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.tool_message_content_type_1_item_type_1 import ToolMessageContentType1ItemType1
 
-        content: Union[List[Union[Dict[str, Any], str]], str]
+        content: Union[list[Union[dict[str, Any], str]], str]
         if isinstance(self.content, list):
             content = []
             for content_type_1_item_data in self.content:
-                content_type_1_item: Union[Dict[str, Any], str]
+                content_type_1_item: Union[dict[str, Any], str]
                 if isinstance(content_type_1_item_data, ToolMessageContentType1ItemType1):
                     content_type_1_item = content_type_1_item_data.to_dict()
                 else:
@@ -99,17 +100,17 @@ class ToolMessage:
 
         tool_call_id = self.tool_call_id
 
-        additional_kwargs: Union[Unset, Dict[str, Any]] = UNSET
+        additional_kwargs: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.additional_kwargs, Unset):
             additional_kwargs = self.additional_kwargs.to_dict()
 
-        response_metadata: Union[Unset, Dict[str, Any]] = UNSET
+        response_metadata: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.response_metadata, Unset):
             response_metadata = self.response_metadata.to_dict()
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         name = self.name
 
@@ -121,7 +122,7 @@ class ToolMessage:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -133,8 +134,8 @@ class ToolMessage:
             field_dict["additional_kwargs"] = additional_kwargs
         if response_metadata is not UNSET:
             field_dict["response_metadata"] = response_metadata
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if name is not UNSET:
             field_dict["name"] = name
         if id is not UNSET:
@@ -147,14 +148,14 @@ class ToolMessage:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.tool_message_additional_kwargs import ToolMessageAdditionalKwargs
         from ..models.tool_message_content_type_1_item_type_1 import ToolMessageContentType1ItemType1
         from ..models.tool_message_response_metadata import ToolMessageResponseMetadata
 
-        d = src_dict.copy()
+        d = dict(src_dict)
 
-        def _parse_content(data: object) -> Union[List[Union["ToolMessageContentType1ItemType1", str]], str]:
+        def _parse_content(data: object) -> Union[list[Union["ToolMessageContentType1ItemType1", str]], str]:
             try:
                 if not isinstance(data, list):
                     raise TypeError()
@@ -180,7 +181,7 @@ class ToolMessage:
                 return content_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union[List[Union["ToolMessageContentType1ItemType1", str]], str], data)
+            return cast(Union[list[Union["ToolMessageContentType1ItemType1", str]], str], data)
 
         content = _parse_content(d.pop("content"))
 
@@ -200,12 +201,12 @@ class ToolMessage:
         else:
             response_metadata = ToolMessageResponseMetadata.from_dict(_response_metadata)
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, ToolMessageType]
-        if isinstance(_type, Unset):
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, ToolMessageType]
+        if isinstance(_type_, Unset):
+            type_ = UNSET
         else:
-            type = ToolMessageType(_type)
+            type_ = ToolMessageType(_type_)
 
         name = d.pop("name", UNSET)
 
@@ -225,7 +226,7 @@ class ToolMessage:
             tool_call_id=tool_call_id,
             additional_kwargs=additional_kwargs,
             response_metadata=response_metadata,
-            type=type,
+            type_=type_,
             name=name,
             id=id,
             artifact=artifact,
@@ -236,7 +237,7 @@ class ToolMessage:
         return tool_message
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

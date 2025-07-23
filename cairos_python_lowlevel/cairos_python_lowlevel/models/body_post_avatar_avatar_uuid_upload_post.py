@@ -1,9 +1,11 @@
+from collections.abc import Mapping
 from io import BytesIO
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from .. import types
 from ..types import File
 
 T = TypeVar("T", bound="BodyPostAvatarAvatarUuidUploadPost")
@@ -17,12 +19,12 @@ class BodyPostAvatarAvatarUuidUploadPost:
     """
 
     file: File
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         file = self.file.to_tuple()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -32,24 +34,19 @@ class BodyPostAvatarAvatarUuidUploadPost:
 
         return field_dict
 
-    def to_multipart(self) -> Dict[str, Any]:
-        file = self.file.to_tuple()
+    def to_multipart(self) -> types.RequestFiles:
+        files: types.RequestFiles = []
 
-        field_dict: Dict[str, Any] = {}
+        files.append(("file", self.file.to_tuple()))
+
         for prop_name, prop in self.additional_properties.items():
-            field_dict[prop_name] = (None, str(prop).encode(), "text/plain")
+            files.append((prop_name, (None, str(prop).encode(), "text/plain")))
 
-        field_dict.update(
-            {
-                "file": file,
-            }
-        )
-
-        return field_dict
+        return files
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         file = File(payload=BytesIO(d.pop("file")))
 
         body_post_avatar_avatar_uuid_upload_post = cls(
@@ -60,7 +57,7 @@ class BodyPostAvatarAvatarUuidUploadPost:
         return body_post_avatar_avatar_uuid_upload_post
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

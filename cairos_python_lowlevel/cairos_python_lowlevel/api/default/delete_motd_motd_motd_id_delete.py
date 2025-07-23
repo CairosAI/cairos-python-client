@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 from uuid import UUID
 
 import httpx
@@ -14,11 +14,11 @@ def _get_kwargs(
     motd_id: UUID,
     *,
     outseta_nocode_access_token: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": f"/motd/{motd_id}",
         "cookies": cookies,

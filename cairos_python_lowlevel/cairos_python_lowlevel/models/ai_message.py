@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -29,38 +30,38 @@ class AIMessage:
     (e.g., tool calls, usage metadata) added by the LangChain framework.
 
         Attributes:
-            content (Union[List[Union['AIMessageContentType1ItemType1', str]], str]):
+            content (Union[list[Union['AIMessageContentType1ItemType1', str]], str]):
             additional_kwargs (Union[Unset, AIMessageAdditionalKwargs]):
             response_metadata (Union[Unset, AIMessageResponseMetadata]):
-            type (Union[Unset, AIMessageType]):  Default: AIMessageType.AI.
+            type_ (Union[Unset, AIMessageType]):  Default: AIMessageType.AI.
             name (Union[Unset, str]):
             id (Union[Unset, str]):
             example (Union[Unset, bool]):  Default: False.
-            tool_calls (Union[Unset, List['ToolCall']]):
-            invalid_tool_calls (Union[Unset, List['InvalidToolCall']]):
+            tool_calls (Union[Unset, list['ToolCall']]):
+            invalid_tool_calls (Union[Unset, list['InvalidToolCall']]):
             usage_metadata (Union[Unset, UsageMetadata]):
     """
 
-    content: Union[List[Union["AIMessageContentType1ItemType1", str]], str]
+    content: Union[list[Union["AIMessageContentType1ItemType1", str]], str]
     additional_kwargs: Union[Unset, "AIMessageAdditionalKwargs"] = UNSET
     response_metadata: Union[Unset, "AIMessageResponseMetadata"] = UNSET
-    type: Union[Unset, AIMessageType] = AIMessageType.AI
+    type_: Union[Unset, AIMessageType] = AIMessageType.AI
     name: Union[Unset, str] = UNSET
     id: Union[Unset, str] = UNSET
     example: Union[Unset, bool] = False
-    tool_calls: Union[Unset, List["ToolCall"]] = UNSET
-    invalid_tool_calls: Union[Unset, List["InvalidToolCall"]] = UNSET
+    tool_calls: Union[Unset, list["ToolCall"]] = UNSET
+    invalid_tool_calls: Union[Unset, list["InvalidToolCall"]] = UNSET
     usage_metadata: Union[Unset, "UsageMetadata"] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.ai_message_content_type_1_item_type_1 import AIMessageContentType1ItemType1
 
-        content: Union[List[Union[Dict[str, Any], str]], str]
+        content: Union[list[Union[dict[str, Any], str]], str]
         if isinstance(self.content, list):
             content = []
             for content_type_1_item_data in self.content:
-                content_type_1_item: Union[Dict[str, Any], str]
+                content_type_1_item: Union[dict[str, Any], str]
                 if isinstance(content_type_1_item_data, AIMessageContentType1ItemType1):
                     content_type_1_item = content_type_1_item_data.to_dict()
                 else:
@@ -70,17 +71,17 @@ class AIMessage:
         else:
             content = self.content
 
-        additional_kwargs: Union[Unset, Dict[str, Any]] = UNSET
+        additional_kwargs: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.additional_kwargs, Unset):
             additional_kwargs = self.additional_kwargs.to_dict()
 
-        response_metadata: Union[Unset, Dict[str, Any]] = UNSET
+        response_metadata: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.response_metadata, Unset):
             response_metadata = self.response_metadata.to_dict()
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         name = self.name
 
@@ -88,25 +89,25 @@ class AIMessage:
 
         example = self.example
 
-        tool_calls: Union[Unset, List[Dict[str, Any]]] = UNSET
+        tool_calls: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.tool_calls, Unset):
             tool_calls = []
             for tool_calls_item_data in self.tool_calls:
                 tool_calls_item = tool_calls_item_data.to_dict()
                 tool_calls.append(tool_calls_item)
 
-        invalid_tool_calls: Union[Unset, List[Dict[str, Any]]] = UNSET
+        invalid_tool_calls: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.invalid_tool_calls, Unset):
             invalid_tool_calls = []
             for invalid_tool_calls_item_data in self.invalid_tool_calls:
                 invalid_tool_calls_item = invalid_tool_calls_item_data.to_dict()
                 invalid_tool_calls.append(invalid_tool_calls_item)
 
-        usage_metadata: Union[Unset, Dict[str, Any]] = UNSET
+        usage_metadata: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.usage_metadata, Unset):
             usage_metadata = self.usage_metadata.to_dict()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -117,8 +118,8 @@ class AIMessage:
             field_dict["additional_kwargs"] = additional_kwargs
         if response_metadata is not UNSET:
             field_dict["response_metadata"] = response_metadata
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if name is not UNSET:
             field_dict["name"] = name
         if id is not UNSET:
@@ -135,7 +136,7 @@ class AIMessage:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.ai_message_additional_kwargs import AIMessageAdditionalKwargs
         from ..models.ai_message_content_type_1_item_type_1 import AIMessageContentType1ItemType1
         from ..models.ai_message_response_metadata import AIMessageResponseMetadata
@@ -143,9 +144,9 @@ class AIMessage:
         from ..models.tool_call import ToolCall
         from ..models.usage_metadata import UsageMetadata
 
-        d = src_dict.copy()
+        d = dict(src_dict)
 
-        def _parse_content(data: object) -> Union[List[Union["AIMessageContentType1ItemType1", str]], str]:
+        def _parse_content(data: object) -> Union[list[Union["AIMessageContentType1ItemType1", str]], str]:
             try:
                 if not isinstance(data, list):
                     raise TypeError()
@@ -171,7 +172,7 @@ class AIMessage:
                 return content_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union[List[Union["AIMessageContentType1ItemType1", str]], str], data)
+            return cast(Union[list[Union["AIMessageContentType1ItemType1", str]], str], data)
 
         content = _parse_content(d.pop("content"))
 
@@ -189,12 +190,12 @@ class AIMessage:
         else:
             response_metadata = AIMessageResponseMetadata.from_dict(_response_metadata)
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, AIMessageType]
-        if isinstance(_type, Unset):
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, AIMessageType]
+        if isinstance(_type_, Unset):
+            type_ = UNSET
         else:
-            type = AIMessageType(_type)
+            type_ = AIMessageType(_type_)
 
         name = d.pop("name", UNSET)
 
@@ -227,7 +228,7 @@ class AIMessage:
             content=content,
             additional_kwargs=additional_kwargs,
             response_metadata=response_metadata,
-            type=type,
+            type_=type_,
             name=name,
             id=id,
             example=example,
@@ -240,7 +241,7 @@ class AIMessage:
         return ai_message
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

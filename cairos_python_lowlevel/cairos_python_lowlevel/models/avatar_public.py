@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -17,30 +18,30 @@ class AvatarPublic:
         id (UUID):
         user_id (str):
         label (str):
-        status (Union[Unset, List[AvatarStatus]]):
+        status (Union[Unset, list[AvatarStatus]]):
     """
 
     id: UUID
     user_id: str
     label: str
-    status: Union[Unset, List[AvatarStatus]] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    status: Union[Unset, list[AvatarStatus]] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         id = str(self.id)
 
         user_id = self.user_id
 
         label = self.label
 
-        status: Union[Unset, List[str]] = UNSET
+        status: Union[Unset, list[str]] = UNSET
         if not isinstance(self.status, Unset):
             status = []
             for status_item_data in self.status:
                 status_item = status_item_data.value
                 status.append(status_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -55,8 +56,8 @@ class AvatarPublic:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         id = UUID(d.pop("id"))
 
         user_id = d.pop("user_id")
@@ -81,7 +82,7 @@ class AvatarPublic:
         return avatar_public
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

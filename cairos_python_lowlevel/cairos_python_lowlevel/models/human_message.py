@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -41,32 +42,32 @@ class HumanMessage:
             print(model.invoke(messages))
 
         Attributes:
-            content (Union[List[Union['HumanMessageContentType1ItemType1', str]], str]):
+            content (Union[list[Union['HumanMessageContentType1ItemType1', str]], str]):
             additional_kwargs (Union[Unset, HumanMessageAdditionalKwargs]):
             response_metadata (Union[Unset, HumanMessageResponseMetadata]):
-            type (Union[Unset, HumanMessageType]):  Default: HumanMessageType.HUMAN.
+            type_ (Union[Unset, HumanMessageType]):  Default: HumanMessageType.HUMAN.
             name (Union[Unset, str]):
             id (Union[Unset, str]):
             example (Union[Unset, bool]):  Default: False.
     """
 
-    content: Union[List[Union["HumanMessageContentType1ItemType1", str]], str]
+    content: Union[list[Union["HumanMessageContentType1ItemType1", str]], str]
     additional_kwargs: Union[Unset, "HumanMessageAdditionalKwargs"] = UNSET
     response_metadata: Union[Unset, "HumanMessageResponseMetadata"] = UNSET
-    type: Union[Unset, HumanMessageType] = HumanMessageType.HUMAN
+    type_: Union[Unset, HumanMessageType] = HumanMessageType.HUMAN
     name: Union[Unset, str] = UNSET
     id: Union[Unset, str] = UNSET
     example: Union[Unset, bool] = False
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.human_message_content_type_1_item_type_1 import HumanMessageContentType1ItemType1
 
-        content: Union[List[Union[Dict[str, Any], str]], str]
+        content: Union[list[Union[dict[str, Any], str]], str]
         if isinstance(self.content, list):
             content = []
             for content_type_1_item_data in self.content:
-                content_type_1_item: Union[Dict[str, Any], str]
+                content_type_1_item: Union[dict[str, Any], str]
                 if isinstance(content_type_1_item_data, HumanMessageContentType1ItemType1):
                     content_type_1_item = content_type_1_item_data.to_dict()
                 else:
@@ -76,17 +77,17 @@ class HumanMessage:
         else:
             content = self.content
 
-        additional_kwargs: Union[Unset, Dict[str, Any]] = UNSET
+        additional_kwargs: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.additional_kwargs, Unset):
             additional_kwargs = self.additional_kwargs.to_dict()
 
-        response_metadata: Union[Unset, Dict[str, Any]] = UNSET
+        response_metadata: Union[Unset, dict[str, Any]] = UNSET
         if not isinstance(self.response_metadata, Unset):
             response_metadata = self.response_metadata.to_dict()
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
         name = self.name
 
@@ -94,7 +95,7 @@ class HumanMessage:
 
         example = self.example
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -105,8 +106,8 @@ class HumanMessage:
             field_dict["additional_kwargs"] = additional_kwargs
         if response_metadata is not UNSET:
             field_dict["response_metadata"] = response_metadata
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if name is not UNSET:
             field_dict["name"] = name
         if id is not UNSET:
@@ -117,14 +118,14 @@ class HumanMessage:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.human_message_additional_kwargs import HumanMessageAdditionalKwargs
         from ..models.human_message_content_type_1_item_type_1 import HumanMessageContentType1ItemType1
         from ..models.human_message_response_metadata import HumanMessageResponseMetadata
 
-        d = src_dict.copy()
+        d = dict(src_dict)
 
-        def _parse_content(data: object) -> Union[List[Union["HumanMessageContentType1ItemType1", str]], str]:
+        def _parse_content(data: object) -> Union[list[Union["HumanMessageContentType1ItemType1", str]], str]:
             try:
                 if not isinstance(data, list):
                     raise TypeError()
@@ -150,7 +151,7 @@ class HumanMessage:
                 return content_type_1
             except:  # noqa: E722
                 pass
-            return cast(Union[List[Union["HumanMessageContentType1ItemType1", str]], str], data)
+            return cast(Union[list[Union["HumanMessageContentType1ItemType1", str]], str], data)
 
         content = _parse_content(d.pop("content"))
 
@@ -168,12 +169,12 @@ class HumanMessage:
         else:
             response_metadata = HumanMessageResponseMetadata.from_dict(_response_metadata)
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, HumanMessageType]
-        if isinstance(_type, Unset):
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, HumanMessageType]
+        if isinstance(_type_, Unset):
+            type_ = UNSET
         else:
-            type = HumanMessageType(_type)
+            type_ = HumanMessageType(_type_)
 
         name = d.pop("name", UNSET)
 
@@ -185,7 +186,7 @@ class HumanMessage:
             content=content,
             additional_kwargs=additional_kwargs,
             response_metadata=response_metadata,
-            type=type,
+            type_=type_,
             name=name,
             id=id,
             example=example,
@@ -195,7 +196,7 @@ class HumanMessage:
         return human_message
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

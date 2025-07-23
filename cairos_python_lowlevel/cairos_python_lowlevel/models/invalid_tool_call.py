@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,17 +18,17 @@ class InvalidToolCall:
         args (str):
         id (str):
         error (str):
-        type (Union[Unset, InvalidToolCallType]):
+        type_ (Union[Unset, InvalidToolCallType]):
     """
 
     name: str
     args: str
     id: str
     error: str
-    type: Union[Unset, InvalidToolCallType] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    type_: Union[Unset, InvalidToolCallType] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         name = self.name
 
         args = self.args
@@ -36,11 +37,11 @@ class InvalidToolCall:
 
         error = self.error
 
-        type: Union[Unset, str] = UNSET
-        if not isinstance(self.type, Unset):
-            type = self.type.value
+        type_: Union[Unset, str] = UNSET
+        if not isinstance(self.type_, Unset):
+            type_ = self.type_.value
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -50,14 +51,14 @@ class InvalidToolCall:
                 "error": error,
             }
         )
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         name = d.pop("name")
 
         args = d.pop("args")
@@ -66,26 +67,26 @@ class InvalidToolCall:
 
         error = d.pop("error")
 
-        _type = d.pop("type", UNSET)
-        type: Union[Unset, InvalidToolCallType]
-        if isinstance(_type, Unset):
-            type = UNSET
+        _type_ = d.pop("type", UNSET)
+        type_: Union[Unset, InvalidToolCallType]
+        if isinstance(_type_, Unset):
+            type_ = UNSET
         else:
-            type = InvalidToolCallType(_type)
+            type_ = InvalidToolCallType(_type_)
 
         invalid_tool_call = cls(
             name=name,
             args=args,
             id=id,
             error=error,
-            type=type,
+            type_=type_,
         )
 
         invalid_tool_call.additional_properties = d
         return invalid_tool_call
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

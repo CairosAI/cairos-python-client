@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,17 +16,17 @@ T = TypeVar("T", bound="OutsetaSubscriptionPlanUpdateRecord")
 class OutsetaSubscriptionPlanUpdateRecord:
     """
     Attributes:
-        person_account (List['OutsetaPersonAccount']):
-        subscriptions (List['OutsetaSubscriptionRecord']):
+        person_account (list['OutsetaPersonAccount']):
+        subscriptions (list['OutsetaSubscriptionRecord']):
         current_subscription (OutsetaSubscriptionRecord):
     """
 
-    person_account: List["OutsetaPersonAccount"]
-    subscriptions: List["OutsetaSubscriptionRecord"]
+    person_account: list["OutsetaPersonAccount"]
+    subscriptions: list["OutsetaSubscriptionRecord"]
     current_subscription: "OutsetaSubscriptionRecord"
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         person_account = []
         for person_account_item_data in self.person_account:
             person_account_item = person_account_item_data.to_dict()
@@ -38,7 +39,7 @@ class OutsetaSubscriptionPlanUpdateRecord:
 
         current_subscription = self.current_subscription.to_dict()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -51,11 +52,11 @@ class OutsetaSubscriptionPlanUpdateRecord:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.outseta_person_account import OutsetaPersonAccount
         from ..models.outseta_subscription_record import OutsetaSubscriptionRecord
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         person_account = []
         _person_account = d.pop("PersonAccount")
         for person_account_item_data in _person_account:
@@ -82,7 +83,7 @@ class OutsetaSubscriptionPlanUpdateRecord:
         return outseta_subscription_plan_update_record
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

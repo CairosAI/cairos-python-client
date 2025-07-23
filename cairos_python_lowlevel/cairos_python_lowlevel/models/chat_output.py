@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 from uuid import UUID
 
 from attrs import define as _attrs_define
@@ -18,29 +19,35 @@ class ChatOutput:
     """
     Attributes:
         trigger_msg (UUID):
-        messages (List[Any]):
+        messages (list[Any]):
         btl_objs (str):
-        animation (Union[Unset, Animation]):
+        animation (Union['Animation', None, Unset]):
     """
 
     trigger_msg: UUID
-    messages: List[Any]
+    messages: list[Any]
     btl_objs: str
-    animation: Union[Unset, "Animation"] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    animation: Union["Animation", None, Unset] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
+        from ..models.animation import Animation
+
         trigger_msg = str(self.trigger_msg)
 
         messages = self.messages
 
         btl_objs = self.btl_objs
 
-        animation: Union[Unset, Dict[str, Any]] = UNSET
-        if not isinstance(self.animation, Unset):
+        animation: Union[None, Unset, dict[str, Any]]
+        if isinstance(self.animation, Unset):
+            animation = UNSET
+        elif isinstance(self.animation, Animation):
             animation = self.animation.to_dict()
+        else:
+            animation = self.animation
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -55,22 +62,32 @@ class ChatOutput:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.animation import Animation
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         trigger_msg = UUID(d.pop("trigger_msg"))
 
-        messages = cast(List[Any], d.pop("messages"))
+        messages = cast(list[Any], d.pop("messages"))
 
         btl_objs = d.pop("btl_objs")
 
-        _animation = d.pop("animation", UNSET)
-        animation: Union[Unset, Animation]
-        if isinstance(_animation, Unset):
-            animation = UNSET
-        else:
-            animation = Animation.from_dict(_animation)
+        def _parse_animation(data: object) -> Union["Animation", None, Unset]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                animation_type_0 = Animation.from_dict(data)
+
+                return animation_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union["Animation", None, Unset], data)
+
+        animation = _parse_animation(d.pop("animation", UNSET))
 
         chat_output = cls(
             trigger_msg=trigger_msg,
@@ -83,7 +100,7 @@ class ChatOutput:
         return chat_output
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

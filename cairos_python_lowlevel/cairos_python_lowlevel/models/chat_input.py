@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -42,18 +43,18 @@ class ChatInput:
                     # Instantiate a chat model and invoke it with the messages
                     model = ...
                     print(model.invoke(messages))
-        history (List[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
-        btl_objs (List[Any]):
-        animation (Union[Unset, List['Animation']]):
+        history (list[Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']]):
+        btl_objs (list[Any]):
+        animation (Union[Unset, list['Animation']]):
     """
 
     prompt: "HumanMessage"
-    history: List[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
-    btl_objs: List[Any]
-    animation: Union[Unset, List["Animation"]] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    history: list[Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]]
+    btl_objs: list[Any]
+    animation: Union[Unset, list["Animation"]] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.ai_message import AIMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
@@ -62,7 +63,7 @@ class ChatInput:
 
         history = []
         for history_item_data in self.history:
-            history_item: Dict[str, Any]
+            history_item: dict[str, Any]
             if isinstance(history_item_data, HumanMessage):
                 history_item = history_item_data.to_dict()
             elif isinstance(history_item_data, AIMessage):
@@ -76,14 +77,14 @@ class ChatInput:
 
         btl_objs = self.btl_objs
 
-        animation: Union[Unset, List[Dict[str, Any]]] = UNSET
+        animation: Union[Unset, list[dict[str, Any]]] = UNSET
         if not isinstance(self.animation, Unset):
             animation = []
             for animation_item_data in self.animation:
                 animation_item = animation_item_data.to_dict()
                 animation.append(animation_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -98,14 +99,14 @@ class ChatInput:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.ai_message import AIMessage
         from ..models.animation import Animation
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
         from ..models.tool_message import ToolMessage
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         prompt = HumanMessage.from_dict(d.pop("prompt"))
 
         history = []
@@ -147,7 +148,7 @@ class ChatInput:
 
             history.append(history_item)
 
-        btl_objs = cast(List[Any], d.pop("btl_objs"))
+        btl_objs = cast(list[Any], d.pop("btl_objs"))
 
         animation = []
         _animation = d.pop("animation", UNSET)
@@ -167,7 +168,7 @@ class ChatInput:
         return chat_input
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

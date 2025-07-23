@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,22 +20,22 @@ T = TypeVar("T", bound="StoredMessage")
 class StoredMessage:
     """
     Attributes:
-        type (StoredMessageType):
+        type_ (StoredMessageType):
         data (Union['AIMessage', 'HumanMessage', 'SystemMessage', 'ToolMessage']):
     """
 
-    type: StoredMessageType
+    type_: StoredMessageType
     data: Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         from ..models.ai_message import AIMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
 
-        type = self.type.value
+        type_ = self.type_.value
 
-        data: Dict[str, Any]
+        data: dict[str, Any]
         if isinstance(self.data, HumanMessage):
             data = self.data.to_dict()
         elif isinstance(self.data, AIMessage):
@@ -44,11 +45,11 @@ class StoredMessage:
         else:
             data = self.data.to_dict()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "type": type,
+                "type": type_,
                 "data": data,
             }
         )
@@ -56,14 +57,14 @@ class StoredMessage:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.ai_message import AIMessage
         from ..models.human_message import HumanMessage
         from ..models.system_message import SystemMessage
         from ..models.tool_message import ToolMessage
 
-        d = src_dict.copy()
-        type = StoredMessageType(d.pop("type"))
+        d = dict(src_dict)
+        type_ = StoredMessageType(d.pop("type"))
 
         def _parse_data(data: object) -> Union["AIMessage", "HumanMessage", "SystemMessage", "ToolMessage"]:
             try:
@@ -99,7 +100,7 @@ class StoredMessage:
         data = _parse_data(d.pop("data"))
 
         stored_message = cls(
-            type=type,
+            type_=type_,
             data=data,
         )
 
@@ -107,7 +108,7 @@ class StoredMessage:
         return stored_message
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import httpx
 
@@ -13,11 +13,11 @@ from ...types import Response
 def _get_kwargs(
     *,
     outseta_nocode_access_token: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/anim/export_job",
         "cookies": cookies,
@@ -28,7 +28,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Optional[Union[HTTPValidationError, list["ExportJob"]]]:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -50,7 +50,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Response[Union[HTTPValidationError, list["ExportJob"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,7 +63,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Response[Union[HTTPValidationError, list["ExportJob"]]]:
     """Get Export Jobs
 
     Args:
@@ -74,7 +74,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['ExportJob']]]
+        Response[Union[HTTPValidationError, list['ExportJob']]]
     """
 
     kwargs = _get_kwargs(
@@ -92,7 +92,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Optional[Union[HTTPValidationError, list["ExportJob"]]]:
     """Get Export Jobs
 
     Args:
@@ -103,7 +103,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, List['ExportJob']]
+        Union[HTTPValidationError, list['ExportJob']]
     """
 
     return sync_detailed(
@@ -116,7 +116,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Response[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Response[Union[HTTPValidationError, list["ExportJob"]]]:
     """Get Export Jobs
 
     Args:
@@ -127,7 +127,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['ExportJob']]]
+        Response[Union[HTTPValidationError, list['ExportJob']]]
     """
 
     kwargs = _get_kwargs(
@@ -143,7 +143,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-) -> Optional[Union[HTTPValidationError, List["ExportJob"]]]:
+) -> Optional[Union[HTTPValidationError, list["ExportJob"]]]:
     """Get Export Jobs
 
     Args:
@@ -154,7 +154,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[HTTPValidationError, List['ExportJob']]
+        Union[HTTPValidationError, list['ExportJob']]
     """
 
     return (
