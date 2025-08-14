@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.avatar_public import AvatarPublic
 from ...models.body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -16,11 +16,15 @@ def _get_kwargs(
     *,
     body: BodyPostAvatarAvatarUuidUploadPost,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
+    if cairos_session is not UNSET:
+        cookies["cairos_session"] = cairos_session
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -68,12 +72,14 @@ def sync_detailed(
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -88,6 +94,7 @@ def sync_detailed(
         uuid=uuid,
         body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     )
 
     response = client.get_httpx_client().request(
@@ -103,12 +110,14 @@ def sync(
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -124,6 +133,7 @@ def sync(
         client=client,
         body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     ).parsed
 
 
@@ -133,12 +143,14 @@ async def asyncio_detailed(
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Response[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -153,6 +165,7 @@ async def asyncio_detailed(
         uuid=uuid,
         body=body,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -166,12 +179,14 @@ async def asyncio(
     client: Union[AuthenticatedClient, Client],
     body: BodyPostAvatarAvatarUuidUploadPost,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Optional[Union[AvatarPublic, HTTPValidationError]]:
     """Post Avatar
 
     Args:
         uuid (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
         body (BodyPostAvatarAvatarUuidUploadPost):
 
     Raises:
@@ -188,5 +203,6 @@ async def asyncio(
             client=client,
             body=body,
             outseta_nocode_access_token=outseta_nocode_access_token,
+            cairos_session=cairos_session,
         )
     ).parsed

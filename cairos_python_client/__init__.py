@@ -25,7 +25,7 @@ from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_map
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_post_avatar_avatar_uuid_upload_post import BodyPostAvatarAvatarUuidUploadPost
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_login_outseta_login_post import BodyLoginOutsetaLoginPost
 from cairos_python_lowlevel.cairos_python_lowlevel.models.body_update_avatar_mapping_avatar_uuid_mapping_patch_mapping import BodyUpdateAvatarMappingAvatarUuidMappingPatchMapping
-from cairos_python_lowlevel.cairos_python_lowlevel.types import File
+from cairos_python_lowlevel.cairos_python_lowlevel.types import File, Unset, UNSET
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_output import ChatOutput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_input import ChatInput
 from cairos_python_lowlevel.cairos_python_lowlevel.models.http_validation_error import HTTPValidationError
@@ -45,6 +45,12 @@ def parse_cookies(cookies: str | None) -> dict[str, str]:
     return dict(map(
         lambda c: c.split(";")[0].strip().split("="),
         cookies.split(",")))
+
+def session_or_unset(cookies) -> str | Unset:
+    if "cairos_session" in cookies:
+        return cookies.get("cairos_session")
+    else:
+        return UNSET
 
 def motions_from_chat_output(chat_output: ChatOutput) -> Motions | None:
     artifact = next(
@@ -111,12 +117,12 @@ def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedC
     else:
         raise Exception(str(response))
 
-def list_threads(client: AuthenticatedClient) -> list[ChatThreadInList] | None:
+def list_threads(client: AuthenticatedClient) -> list[ChatThreadInList] | HTTPValidationError | None:
     return get_threads_thread_get.sync(
         client=client,
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
 
-def create_thread(client: AuthenticatedClient) -> ChatThreadPublic:
+def create_thread(client: AuthenticatedClient) -> ChatThreadPublic | HTTPValidationError:
     thread = new_thread_thread_post.sync(
         client=client,
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
@@ -165,7 +171,7 @@ def set_avatar_mapping_preset(uuid: str, mapping: BodyUpdateAvatarMappingAvatarU
             mapping=mapping),
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
 
-def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic]:
+def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic] | HTTPValidationError:
     avatar_response = get_avatars_avatar_get.sync(
         client=client,
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))

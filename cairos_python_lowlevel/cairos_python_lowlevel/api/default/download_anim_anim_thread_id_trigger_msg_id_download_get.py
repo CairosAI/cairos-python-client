@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -14,9 +14,13 @@ def _get_kwargs(
     trigger_msg_id: str,
     *,
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> dict[str, Any]:
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
+
+    if cairos_session is not UNSET:
+        cookies["cairos_session"] = cairos_session
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -60,6 +64,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Download Anim
 
@@ -67,6 +72,7 @@ def sync_detailed(
         thread_id (str):
         trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -80,6 +86,7 @@ def sync_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     )
 
     response = client.get_httpx_client().request(
@@ -95,6 +102,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Download Anim
 
@@ -102,6 +110,7 @@ def sync(
         thread_id (str):
         trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -116,6 +125,7 @@ def sync(
         trigger_msg_id=trigger_msg_id,
         client=client,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     ).parsed
 
 
@@ -125,6 +135,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Download Anim
 
@@ -132,6 +143,7 @@ async def asyncio_detailed(
         thread_id (str):
         trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -145,6 +157,7 @@ async def asyncio_detailed(
         thread_id=thread_id,
         trigger_msg_id=trigger_msg_id,
         outseta_nocode_access_token=outseta_nocode_access_token,
+        cairos_session=cairos_session,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -158,6 +171,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
+    cairos_session: Union[Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Download Anim
 
@@ -165,6 +179,7 @@ async def asyncio(
         thread_id (str):
         trigger_msg_id (str):
         outseta_nocode_access_token (str):
+        cairos_session (Union[Unset, str]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -180,5 +195,6 @@ async def asyncio(
             trigger_msg_id=trigger_msg_id,
             client=client,
             outseta_nocode_access_token=outseta_nocode_access_token,
+            cairos_session=cairos_session,
         )
     ).parsed
