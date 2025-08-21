@@ -99,3 +99,11 @@ if __name__ == "__main__":
 
     asyncio.run(test_handler(client))
 ```
+
+## Workflows
+
+When performing long-running jobs, responses arrive asynchronously via SSE, which makes it harder to follow the sequence of steps.
+
+Here are example workflows to clarify.
+
+![workflow](./workflow.png "workflow")
