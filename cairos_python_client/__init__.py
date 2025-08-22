@@ -46,11 +46,11 @@ def parse_cookies(cookies: str | None) -> dict[str, str]:
         lambda c: c.split(";")[0].strip().split("="),
         cookies.split(",")))
 
-def session_or_unset(cookies) -> str | Unset:
+def get_session(cookies) -> str:
     if "cairos_session" in cookies:
         return cookies.get("cairos_session")
     else:
-        return UNSET
+        raise ValueError("Session id is required")
 
 def motions_from_chat_output(chat_output: ChatOutput) -> Motions | None:
     artifact = next(
@@ -94,7 +94,8 @@ def send_chat(prompt: str, thread_id: str, client: AuthenticatedClient) -> ChatO
             prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
             btl_objs=[]),
-        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""),
+        cairos_session=get_session(client._cookies))
     if isinstance(response, ChatOutput):
         return response
     else:
@@ -111,7 +112,8 @@ def request_motions_sequence(prompt: str, thread_id: str, client: AuthenticatedC
             prompt=HumanMessage(content=prompt, id=uuid4().hex),
             history=[],
             btl_objs=[]),
-        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""),
+        cairos_session=get_session(client._cookies))
     if isinstance(response, ChatOutput):
         return response
     else:
@@ -139,7 +141,8 @@ def create_avatar(label: str, client: AuthenticatedClient) -> AvatarPublic | HTT
     return create_blank_avatar_avatar_new_label_post.sync(
         label=label,
         client=client,
-        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""),
+        cairos_session=get_session(client._cookies))
 
 def upload_avatar(uuid: str, avatar_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     with open(avatar_path, "rb") as f:
@@ -150,7 +153,8 @@ def upload_avatar(uuid: str, avatar_path: Path, client: AuthenticatedClient) -> 
                 file=File(
                     payload=f,
                     file_name=f.name)),
-            outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+            outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""),
+            cairos_session=get_session(client._cookies))
 
 def upload_avatar_mapping(uuid: str, mapping_path: Path, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     with open(mapping_path, "rb") as f:
@@ -174,7 +178,8 @@ def set_avatar_mapping_preset(uuid: str, mapping: BodyUpdateAvatarMappingAvatarU
 def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic] | HTTPValidationError:
     avatar_response = get_avatars_avatar_get.sync(
         client=client,
-        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""),
+        cairos_session=get_session(client._cookies))
 
     if avatar_response:
         return avatar_response

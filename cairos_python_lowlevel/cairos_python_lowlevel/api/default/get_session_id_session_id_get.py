@@ -1,50 +1,39 @@
 from http import HTTPStatus
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.chat_input import ChatInput
-from ...models.chat_output import ChatOutput
 from ...models.http_validation_error import HTTPValidationError
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
-    thread_id: str,
     *,
-    body: ChatInput,
+    cairos_session: Union[Unset, str] = UNSET,
     outseta_nocode_access_token: str,
-    cairos_session: str,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
     cookies = {}
+    if cairos_session is not UNSET:
+        cookies["cairos_session"] = cairos_session
+
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
-    cookies["cairos_session"] = cairos_session
-
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": f"/thread/{thread_id}/test",
+        "method": "get",
+        "url": "/session_id",
         "cookies": cookies,
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ChatOutput, HTTPValidationError]]:
+) -> Optional[Union[HTTPValidationError, str]]:
     if response.status_code == 200:
-        response_200 = ChatOutput.from_dict(response.json())
-
+        response_200 = cast(str, response.json())
         return response_200
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -58,7 +47,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ChatOutput, HTTPValidationError]]:
+) -> Response[Union[HTTPValidationError, str]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -68,34 +57,31 @@ def _build_response(
 
 
 def sync_detailed(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ChatInput,
+    cairos_session: Union[Unset, str] = UNSET,
     outseta_nocode_access_token: str,
-    cairos_session: str,
-) -> Response[Union[ChatOutput, HTTPValidationError]]:
-    """Process Message Test
+) -> Response[Union[HTTPValidationError, str]]:
+    """Get Session Id
+
+     This id is used to differentiate sessions of the same user.
+    It does not have an authentication role.
 
     Args:
-        thread_id (str):
+        cairos_session (Union[Unset, str]):
         outseta_nocode_access_token (str):
-        cairos_session (str):
-        body (ChatInput):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatOutput, HTTPValidationError]]
+        Response[Union[HTTPValidationError, str]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        body=body,
-        outseta_nocode_access_token=outseta_nocode_access_token,
         cairos_session=cairos_session,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = client.get_httpx_client().request(
@@ -106,67 +92,61 @@ def sync_detailed(
 
 
 def sync(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ChatInput,
+    cairos_session: Union[Unset, str] = UNSET,
     outseta_nocode_access_token: str,
-    cairos_session: str,
-) -> Optional[Union[ChatOutput, HTTPValidationError]]:
-    """Process Message Test
+) -> Optional[Union[HTTPValidationError, str]]:
+    """Get Session Id
+
+     This id is used to differentiate sessions of the same user.
+    It does not have an authentication role.
 
     Args:
-        thread_id (str):
+        cairos_session (Union[Unset, str]):
         outseta_nocode_access_token (str):
-        cairos_session (str):
-        body (ChatInput):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatOutput, HTTPValidationError]
+        Union[HTTPValidationError, str]
     """
 
     return sync_detailed(
-        thread_id=thread_id,
         client=client,
-        body=body,
-        outseta_nocode_access_token=outseta_nocode_access_token,
         cairos_session=cairos_session,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     ).parsed
 
 
 async def asyncio_detailed(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ChatInput,
+    cairos_session: Union[Unset, str] = UNSET,
     outseta_nocode_access_token: str,
-    cairos_session: str,
-) -> Response[Union[ChatOutput, HTTPValidationError]]:
-    """Process Message Test
+) -> Response[Union[HTTPValidationError, str]]:
+    """Get Session Id
+
+     This id is used to differentiate sessions of the same user.
+    It does not have an authentication role.
 
     Args:
-        thread_id (str):
+        cairos_session (Union[Unset, str]):
         outseta_nocode_access_token (str):
-        cairos_session (str):
-        body (ChatInput):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ChatOutput, HTTPValidationError]]
+        Response[Union[HTTPValidationError, str]]
     """
 
     kwargs = _get_kwargs(
-        thread_id=thread_id,
-        body=body,
-        outseta_nocode_access_token=outseta_nocode_access_token,
         cairos_session=cairos_session,
+        outseta_nocode_access_token=outseta_nocode_access_token,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -175,35 +155,32 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    thread_id: str,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ChatInput,
+    cairos_session: Union[Unset, str] = UNSET,
     outseta_nocode_access_token: str,
-    cairos_session: str,
-) -> Optional[Union[ChatOutput, HTTPValidationError]]:
-    """Process Message Test
+) -> Optional[Union[HTTPValidationError, str]]:
+    """Get Session Id
+
+     This id is used to differentiate sessions of the same user.
+    It does not have an authentication role.
 
     Args:
-        thread_id (str):
+        cairos_session (Union[Unset, str]):
         outseta_nocode_access_token (str):
-        cairos_session (str):
-        body (ChatInput):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ChatOutput, HTTPValidationError]
+        Union[HTTPValidationError, str]
     """
 
     return (
         await asyncio_detailed(
-            thread_id=thread_id,
             client=client,
-            body=body,
-            outseta_nocode_access_token=outseta_nocode_access_token,
             cairos_session=cairos_session,
+            outseta_nocode_access_token=outseta_nocode_access_token,
         )
     ).parsed

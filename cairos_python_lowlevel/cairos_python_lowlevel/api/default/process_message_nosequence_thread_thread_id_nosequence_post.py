@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.chat_input import ChatInput
 from ...models.chat_output import ChatOutput
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
@@ -16,15 +16,14 @@ def _get_kwargs(
     *,
     body: ChatInput,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
-    if cairos_session is not UNSET:
-        cookies["cairos_session"] = cairos_session
+    cookies["cairos_session"] = cairos_session
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -74,14 +73,14 @@ def sync_detailed(
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Response[Union[ChatOutput, HTTPValidationError]]:
     """Process Message Nosequence
 
     Args:
         thread_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
         body (ChatInput):
 
     Raises:
@@ -112,14 +111,14 @@ def sync(
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Optional[Union[ChatOutput, HTTPValidationError]]:
     """Process Message Nosequence
 
     Args:
         thread_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
         body (ChatInput):
 
     Raises:
@@ -145,14 +144,14 @@ async def asyncio_detailed(
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Response[Union[ChatOutput, HTTPValidationError]]:
     """Process Message Nosequence
 
     Args:
         thread_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
         body (ChatInput):
 
     Raises:
@@ -181,14 +180,14 @@ async def asyncio(
     client: Union[AuthenticatedClient, Client],
     body: ChatInput,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Optional[Union[ChatOutput, HTTPValidationError]]:
     """Process Message Nosequence
 
     Args:
         thread_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
         body (ChatInput):
 
     Raises:

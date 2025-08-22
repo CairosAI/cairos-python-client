@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.orm_animation import OrmAnimation
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
@@ -16,13 +16,12 @@ def _get_kwargs(
     avatar_id: str,
     *,
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> dict[str, Any]:
     cookies = {}
     cookies["Outseta.nocode.accessToken"] = outseta_nocode_access_token
 
-    if cairos_session is not UNSET:
-        cookies["cairos_session"] = cairos_session
+    cookies["cairos_session"] = cairos_session
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -68,7 +67,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
     """Retarget Anim
 
@@ -77,7 +76,7 @@ def sync_detailed(
         trigger_msg_id (str):
         avatar_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -109,7 +108,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
     """Retarget Anim
 
@@ -118,7 +117,7 @@ def sync(
         trigger_msg_id (str):
         avatar_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -145,7 +144,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Response[Union[HTTPValidationError, OrmAnimation]]:
     """Retarget Anim
 
@@ -154,7 +153,7 @@ async def asyncio_detailed(
         trigger_msg_id (str):
         avatar_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -184,7 +183,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     outseta_nocode_access_token: str,
-    cairos_session: Union[Unset, str] = UNSET,
+    cairos_session: str,
 ) -> Optional[Union[HTTPValidationError, OrmAnimation]]:
     """Retarget Anim
 
@@ -193,7 +192,7 @@ async def asyncio(
         trigger_msg_id (str):
         avatar_id (str):
         outseta_nocode_access_token (str):
-        cairos_session (Union[Unset, str]):
+        cairos_session (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
