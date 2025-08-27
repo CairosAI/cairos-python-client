@@ -62,11 +62,14 @@ async def test_handler(base_client: httpx.AsyncClient) -> None:
         except:
             pytest.fail(error_msg)
 
+    async def on_unknown_message(_, msg):
+        print(msg)
+
     handler = CairosSSEHandler(
         client=client,
         url=url,
         error_on_unknown=False,
-        unknown_handler=print)
+        unknown_handler=on_unknown_message)
 
     handler.register_message(SSEMessageDef(
         event=CairosSSEMessages.animation_success,

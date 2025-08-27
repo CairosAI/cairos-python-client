@@ -99,4 +99,4 @@ class CairosSSEHandler():
                 elif self._error_on_unknown:
                     raise UnknownSSEMessage(evt.data)
                 elif self._unknown_handler:
-                    await self._unknown_handler(evt.data)
+                    await self._unknown_handler(self._client, evt.data)

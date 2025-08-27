@@ -5,6 +5,8 @@ from pathlib import Path
 import cairos_python_client
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient
 from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_public import AvatarPublic
+from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_in_list import ChatThreadInList
+from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_public import ChatThreadPublic
 
 @pytest.fixture
 def user_data():
@@ -28,6 +30,7 @@ def avatar_path() -> Generator[Path, Any, Any]:
 @pytest.mark.dependency(name="test_create_get_thread")
 def test_create_get_thread(logged_in_client: AuthenticatedClient):
     new_thread = cairos_python_client.create_thread(logged_in_client)
+    assert isinstance(new_thread, ChatThreadPublic)
     thread = cairos_python_client.get_thread_by_id(new_thread.id, logged_in_client)
     print(f"----------\nThread: {thread}\n")
     assert thread, "Thread not found"
@@ -36,7 +39,11 @@ def test_create_get_thread(logged_in_client: AuthenticatedClient):
 def test_list_threads(logged_in_client: AuthenticatedClient):
     threads = cairos_python_client.list_threads(logged_in_client)
     print(f"----------\nThreads: {threads}\n")
-    assert threads and len(threads) > 0, f"No threads found {threads}"
+    assert threads \
+        and isinstance(threads, list) \
+        and len(threads) > 0 \
+        and isinstance(threads[0], ChatThreadInList),\
+        f"No threads found {threads}"
     assert threads[0].id is not None, f"Thread incorrect {threads[0]}"
 
 @pytest.mark.dependency(name="test_create_avatar")
@@ -55,10 +62,12 @@ def test_upload_avatar(
         logged_in_client: AuthenticatedClient,
         avatar_path: Path):
     avatars = cairos_python_client.list_avatars(client=logged_in_client)
-    if len(avatars) > 0:
-        avatar = avatars[0]
-    else:
-        raise ValueError("Avatars are empty")
+    assert avatars \
+        and isinstance(avatars, list) \
+        and isinstance(avatars[0], AvatarPublic), \
+        "No avatars found"
+
+    avatar = avatars[0]
 
     response = cairos_python_client.upload_avatar(
         uuid=avatar.id.hex,
@@ -72,12 +81,20 @@ def test_upload_avatar(
 def test_list_avatars(logged_in_client: AuthenticatedClient):
     avatars = cairos_python_client.list_avatars(logged_in_client)
     print(f"----------\nAvatars: {avatars}\n")
-    assert avatars and len(avatars) > 0, "No avatars found"
+    assert avatars \
+        and isinstance(avatars, list) \
+        and isinstance(avatars[0], AvatarPublic), \
+        "No avatars found"
 
 @pytest.mark.dependency(depends=["test_create_get_thread", "test_upload_avatar"])
 def test_motions_sequence(logged_in_client):
     prompt = "Knee warmup. Perform immediately, without prompting."
     threads = cairos_python_client.list_threads(logged_in_client)
+    assert threads \
+        and isinstance(threads, list) \
+        and isinstance(threads[0], ChatThreadInList), \
+        "No avatars found"
+
     assert threads and len(threads) > 0
     sequence = cairos_python_client.request_motions_sequence(
         prompt=prompt,
@@ -88,7 +105,13 @@ def test_motions_sequence(logged_in_client):
 
 @pytest.mark.dependency(depends=["test_upload_avatar"])
 def test_delete_avatar(logged_in_client):
-    avatar = cairos_python_client.list_avatars(logged_in_client)[-1]
+    avatars = cairos_python_client.list_avatars(logged_in_client)
+    assert avatars \
+        and isinstance(avatars, list) \
+        and isinstance(avatars[0], AvatarPublic), \
+        "No avatars found"
+    avatar = avatars[0]
+
     cairos_python_client.delete_avatar(
         avatar.id.hex,
         client=logged_in_client)

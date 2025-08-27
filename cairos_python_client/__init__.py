@@ -1,7 +1,5 @@
 from typing import Sequence
 from cairos_types.core import Motions
-import json
-import urllib.parse
 
 from pathlib import Path
 from cairos_python_lowlevel.cairos_python_lowlevel import AuthenticatedClient, Client
