@@ -18,6 +18,19 @@ class CairosSSEResponseModel(Protocol):
 class CairosSSEMessages(Enum):
     animation_success = "animation_success"
     animation_error = "animation_error"
+    export_success = "export_success"
+    export_error = "export_error"
+    avatar_upload_success = "avatar_upload_success"
+    avatar_upload_err = "avatar_upload_err"
+    avatar_autorig_success = "avatar_autorig_success"
+    avatar_autorig_err = "avatar_autorig_err"
+    avatar_mapping_success = "avatar_mapping_success"
+    avatar_mapping_err = "avatar_mapping_err"
+    avatar_export_success = "avatar_export_success"
+    avatar_export_error = "avatar_export_error"
+    animation_retarget_success = "animation_retarget_success"
+    animation_retarget_err = "animation_retarget_err"
+    usage_report = "usage_report"
 
 
 @dataclass
