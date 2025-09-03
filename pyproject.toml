@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cairos-python-client"
-version = "0.8.1"
+version = "0.8.2"
 description = "A client library for accessing Cairos API"
 authors = ["Mois Moshev <mois.moshev@bottleshipvfx.com>"]
 readme = "README.md"
@@ -14,12 +14,12 @@ include = ["CHANGELOG.md", "cairos_python_client/py.typed"]
 [tool.poetry.dependencies]
 python = "^3.8"
 httpx = ">=0.20.0,<0.28.0"
+httpx_sse = "*"
 attrs = ">=21.3.0"
 python-dateutil = "^2.8.0"
 cairos_types = "*"
 
 [tool.poetry.group.test.dependencies]
-httpx_sse = "*"
 pytest = "*"
 pytest-asyncio = "*"
 starlette = "*"

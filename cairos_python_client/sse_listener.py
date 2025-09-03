@@ -85,6 +85,8 @@ class CairosSSEHandler():
                         msg.callback(self._client, evt.data)
                 elif self._error_on_unknown:
                     raise UnknownSSEMessage(evt.data)
+                elif self._unknown_handler is not None:
+                    self._unknown_handler(self._client, evt.data)
 
     async def arun(self):
         async with httpx_sse.aconnect_sse(
@@ -111,5 +113,5 @@ class CairosSSEHandler():
                         await msg.callback(self._client, evt.data)
                 elif self._error_on_unknown:
                     raise UnknownSSEMessage(evt.data)
-                elif self._unknown_handler:
+                elif self._unknown_handler is not None:
                     await self._unknown_handler(self._client, evt.data)

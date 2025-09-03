@@ -71,7 +71,7 @@ async def export_animation(client: AuthenticatedClient, thread_id: str, trigger_
         outseta_nocode_access_token=client._cookies.get(cairos_python_client.token_cookie_name, ""),
         cairos_session=cairos_python_client.session_or_unset(client._cookies))
 
-def on_animation_success(client: AuthenticatedClient, animation: OrmAnimation):
+async def on_animation_success(client: AuthenticatedClient, animation: OrmAnimation):
     print("Received sequencer success")
     # Now that animation is done, export it for retrieval
     await export_animation(client, animation.job_thread, animation.job_trigger)
