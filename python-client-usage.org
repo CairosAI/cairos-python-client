@@ -1,0 +1,57 @@
+* Using the [[https://github.com/CairosAI/cairos-python-client][Cairos Python client]] library
+
+- Clone the library from GitHub.
+- Install its dependencies (preferably in a virtual environment).
+- Have your credentials ready.
+
+** API usage
+
+The high-level library is synchronous. Asyncio functions are available, too, under =cairos_python_lowlevel=.
+It is important to note that long-running tasks return their final output (and potential errors) using [[https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events][Server-Sent Events]]. Thus, you must listen for SSE using the =CairosSSEHandler=.
+
+First log in:
+#+begin_src python
+import cairos_python_client
+
+client = cairos_python_client.login("https://app.cairos.ai/api", "bob", "bobspassword")
+#+end_src
+
+The returned client can then be used to call the API. The same client can be used in both sync and async functions.
+
+The Cairos interaction model uses chat threads, so that different animations can be developed independently.
+
+For example, here is how to get the existing threads, and post a message to the first one:
+
+#+begin_src python
+threads = cairos_python_client.list_threads(client)
+chat_output = cairos_python_client.send_chat("Dance with your arms flapping around", threads[0].id, client)
+#+end_src
+
+The resulting =chat_output= does not contain the actual sequenced animation, just the AI agent's messages, and the sequence of motions that will constitute the animation.
+The result is returned in SSE.
+
+Check out the fully developed [[https://github.com/CairosAI/cairos-python-client/tree/master/examples/sequence_animation][example on GitHub]].
+
+** Server-Sent Events
+
+The library provides a handler, and an enumeration =CairosSSEMessages= of the possible events. The implementer must register a callback for the given event.
+
+#+begin_src python
+  from cairos_python_client.sse_listener import CairosSSEHandler, SSEMessageDef, CairosSSEMessages
+
+  handler = CairosSSEHandler(
+      client=client,
+      url=url,
+      error_on_unknown=True,
+      unknown_handler=print)
+
+  handler.register_message(SSEMessageDef(
+      event=CairosSSEMessages.animation_success,
+      response_model=OrmAnimation,
+      callback=on_animation_success,
+      parse_model=True))
+
+  handler.run()
+#+end_src
+
+For asyncio, use =handler.arun=. See the Python client README for more information.
