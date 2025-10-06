@@ -1,4 +1,5 @@
 from typing import Sequence
+from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_rebuilt import AvatarRebuilt
 from cairos_types.core import Motions
 
 from pathlib import Path
@@ -7,7 +8,10 @@ from cairos_python_lowlevel.cairos_python_lowlevel.api.default import (
     get_avatar_avatar_uuid_get,
     get_avatars_avatar_get,
     get_avatar_with_file_avatar_uuid_file_get,
+    get_avatars_rebuilt_avatar_rebuilt_get,
+    get_avatar_rebuilt_by_id_avatar_rebuilt_uuid_get,
     create_blank_avatar_avatar_new_label_post,
+    get_session_id_session_id_get,
     post_avatar_avatar_uuid_upload_post,
     update_avatar_mapping_avatar_uuid_mapping_patch,
     process_message_thread_thread_id_post,
@@ -43,6 +47,14 @@ def parse_cookies(cookies: str | None) -> dict[str, str]:
     return dict(map(
         lambda c: c.split(";")[0].strip().split("="),
         cookies.split(",")))
+
+def request_session_id(client: AuthenticatedClient):
+    sess = get_session_id_session_id_get.sync(
+        client=client,
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+    assert isinstance(sess, str)
+    client._cookies["cairos_session"] = sess
+    return client
 
 def get_session(cookies) -> str:
     if "cairos_session" in cookies:
@@ -184,13 +196,23 @@ def list_avatars(client: AuthenticatedClient) -> Sequence[AvatarPublic] | HTTPVa
     else:
         return []
 
-def get_avatar(uuid: str, client: AuthenticatedClient) -> bytes:
+def list_avatars_rebuilt(client: AuthenticatedClient) -> Sequence[AvatarRebuilt] | HTTPValidationError:
+    avatar_response = get_avatars_rebuilt_avatar_rebuilt_get.sync(
+        client=client,
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
+
+    if avatar_response:
+        return avatar_response
+    else:
+        return []
+
+def get_avatar(uuid: str, client: AuthenticatedClient) -> AvatarPublic | HTTPValidationError | None:
     """ Return the avatar metadata.
     """
-    return get_avatar_avatar_uuid_get.sync_detailed(
+    return get_avatar_avatar_uuid_get.sync(
         uuid=uuid,
         client=client,
-        outseta_nocode_access_token=client._cookies.get(token_cookie_name, "")).content
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
 
 def get_avatar_file(uuid: str, client: AuthenticatedClient) -> bytes:
     """ Return the avatar metadata.
@@ -199,6 +221,12 @@ def get_avatar_file(uuid: str, client: AuthenticatedClient) -> bytes:
         uuid=uuid,
         client=client,
         outseta_nocode_access_token=client._cookies.get(token_cookie_name, "")).content
+
+def get_avatar_rebuilt(uuid: str, client: AuthenticatedClient) -> AvatarRebuilt | HTTPValidationError | None:
+    return get_avatar_rebuilt_by_id_avatar_rebuilt_uuid_get.sync(
+        uuid=uuid,
+        client=client,
+        outseta_nocode_access_token=client._cookies.get(token_cookie_name, ""))
 
 def delete_avatar(uuid: str, client: AuthenticatedClient) -> None:
     delete_avatar_route_avatar_uuid_delete.sync(

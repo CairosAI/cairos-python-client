@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cairos-python-client"
-version = "0.8.2"
+version = "0.8.3"
 description = "A client library for accessing Cairos API"
 authors = ["Mois Moshev <mois.moshev@bottleshipvfx.com>"]
 readme = "README.md"
@@ -12,12 +12,12 @@ include = ["CHANGELOG.md", "cairos_python_client/py.typed"]
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.10.6"
 httpx = ">=0.20.0,<0.28.0"
 httpx_sse = "*"
 attrs = ">=21.3.0"
 python-dateutil = "^2.8.0"
-cairos_types = "*"
+cairos-types = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"
@@ -31,7 +31,7 @@ priority = "primary"
 
 [[tool.poetry.source]]
 name = "gitea"
-url = "https://apollo.bottleship.local:8080/api/packages/Cairos/pypi/"
+url = "https://apollo.bottleship.local:8080/api/packages/Cairos/pypi/simple/"
 priority = "supplemental"
 
 [build-system]

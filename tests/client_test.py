@@ -1,4 +1,6 @@
 from typing import Generator, Any
+from cairos_python_lowlevel.cairos_python_lowlevel.api.default import get_session_id_session_id_get
+from cairos_python_lowlevel.cairos_python_lowlevel.models.avatar_rebuilt import AvatarRebuilt
 import pytest
 import tempfile
 from pathlib import Path
@@ -10,13 +12,15 @@ from cairos_python_lowlevel.cairos_python_lowlevel.models.chat_thread_public imp
 
 @pytest.fixture
 def user_data():
-    return ("http://10.1.20.124:8000",
-            "user1",
-            "secretpass")
+    return ("http://10.1.10.157:8000",
+            "testuser",
+            "abcd")
 
 @pytest.fixture
 def logged_in_client(user_data: tuple[str, str, str]):
-    return cairos_python_client.login(*user_data)
+    client = cairos_python_client.login(*user_data)
+    cairos_python_client.request_session_id(client)
+    return client
 
 @pytest.fixture
 def avatar_path() -> Generator[Path, Any, Any]:
@@ -50,7 +54,7 @@ def test_list_threads(logged_in_client: AuthenticatedClient):
 def test_create_avatar(
         logged_in_client: AuthenticatedClient):
     avatar = cairos_python_client.create_avatar(
-        "Test label",
+        "TestAvatar",
         client=logged_in_client)
 
     assert avatar, "Avatar was not created"
@@ -66,8 +70,8 @@ def test_upload_avatar(
         and isinstance(avatars, list) \
         and isinstance(avatars[0], AvatarPublic), \
         "No avatars found"
-
-    avatar = avatars[0]
+    print(f"\nAvatars: {avatars}\n")
+    avatar = next(a for a in avatars if a.label == "TestAvatar")
 
     response = cairos_python_client.upload_avatar(
         uuid=avatar.id.hex,
@@ -115,3 +119,30 @@ def test_delete_avatar(logged_in_client):
     cairos_python_client.delete_avatar(
         avatar.id.hex,
         client=logged_in_client)
+
+@pytest.mark.dependency(name="test_list_avatars_rebuilt")
+def test_list_avatars_rebuilt(logged_in_client):
+    avatars = cairos_python_client.list_avatars_rebuilt(logged_in_client)
+    assert avatars \
+        and isinstance(avatars, list) \
+        and isinstance(avatars[0], AvatarRebuilt), \
+        "No avatars found"
+
+    print("----------\nRebuilt avatars: {avatars}")
+
+@pytest.mark.dependency(name="test_list_avatar_rebuilt_get",
+                        depends=["test_list_avatars_rebuilt"])
+def test_avatar_rebuilt_get(logged_in_client):
+    avatars = cairos_python_client.list_avatars_rebuilt(logged_in_client)
+
+    assert avatars and isinstance(avatars, list) \
+        and isinstance(avatars[0], AvatarRebuilt)
+
+    avatar = cairos_python_client.get_avatar_rebuilt(
+        uuid=avatars[0].id.hex,
+        client=logged_in_client)
+    assert avatar \
+        and isinstance(avatar, AvatarRebuilt), \
+        "No avatar found"
+
+    print("----------\nRebuilt avatars: {avatars}")
